@@ -1,0 +1,103 @@
+.hero {
+  display: flex;
+  justify-content: space-between;
+  height: 500px;
+  overflow: hidden;
+}
+
+.heroleft {
+  /* display: flex; */
+  margin-top: 10%;
+  margin-left: 4%;
+  flex: 2;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  /* background-color: aquamarine; */
+}
+.heroleft h1 {
+  font-size: 30px;
+}
+.heroleft h1 .appname {
+  color: maroon;
+}
+.heroleft h1 .apppara {
+  font-size: 27px;
+  margin-top: 7px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+.heroleft .para {
+  font-size: 17px;
+  margin-top: 21px;
+  text-align: justify;
+}
+.heroleft button {
+  display: flex;
+  margin-top: 17px;
+  padding: 9px;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: rgb(221, 220, 220);
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  color: maroon;
+  box-shadow: 0px 2.98256px 7.4564px rgba(0, 0, 0, 0.1);
+}
+.heroright {
+  flex: 3;
+  padding: 20px;
+  justify-content: space-around;
+  /* margin-left: 17%; */
+}
+
+.image-grid {
+  display: flex;
+  overflow: hidden;
+  /* flex-direction: column; */
+  align-items: flex-start;
+  /* justify-content: space-evenly; */
+
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.image-grid img {
+  width: 43%; /* Adjust this to control the image width */
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Specific alignment for each image */
+.image-grid img:nth-child(1) {
+  align-self: flex-start; /* Aligns first image to the left */
+  height: 220px;
+  top: 0%;
+}
+
+.image-grid img:nth-child(2) {
+  align-self: flex-end; /* Centers the second image */
+  height: 350px;
+  margin-top: 70px;
+}
+.image-grid img:nth-child(3) {
+  align-self: flex-start; /* Centers the third image */
+  height: 200px;
+  transform: translateY(-180px); /* Keeps the image elevated */
+  transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.image-grid img:nth-child(3):hover {
+  transform: translateY(-200px) scale(1.1); /* Additional upward movement on hover */
+  filter: brightness(1.1);
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.image-grid img:hover:not(:nth-child(3)) {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+  opacity: 0.8;
+  cursor: pointer;
+}
