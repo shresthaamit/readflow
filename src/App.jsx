@@ -7,9 +7,14 @@ import Navbar from "./components/navbar";
 import Hero from "./components/hero";
 import Card from "./components/card";
 import Footer from "./components/footer";
-import "../src/components/card.css";
-function App() {
-  const [cardIndex, setCardIndex] = useState(0);
+import Books from "./pages/books";
+// import "../src/components/card.css";
+import { Routes, Route, Link, useParams } from "react-router-dom";
+function Book() {
+  return <Books />;
+}
+
+function Home() {
   const cardsData = [
     {
       img: "../src/images/Working.gif",
@@ -49,32 +54,10 @@ function App() {
     },
   ];
 
-  const infiniteCards = [...cardsData, ...cardsData]; // Duplicate cards for seamless flow
-
-  const [translateX, setTranslateX] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTranslateX((prevTranslateX) => {
-        if (prevTranslateX <= -cardsData.length * 262) {
-          return 0; // Reset position if it goes out of bounds
-        }
-        return prevTranslateX - 262; // Move left by the width of a card
-      });
-    }, 2000); // Move every 2 seconds
-
-    return () => clearInterval(interval);
-  }, [cardsData.length]);
-
   return (
-    <div>
-      <Navbar />
+    <>
       <Hero />
-      {/* <> */}
-      <div
-        className="cards"
-        style={{ transform: `translateX(-${cardIndex * 262}px)` }}
-      >
+      <div className="cards">
         {cardsData.map((card, index) => (
           <Card
             key={index}
@@ -88,6 +71,19 @@ function App() {
           />
         ))}
       </div>
+    </>
+  );
+}
+function App() {
+  return (
+    <div>
+      <Navbar />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/books" element={<Book />} />
+      </Routes>
+
       <Footer />
     </div>
   );

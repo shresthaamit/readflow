@@ -2,39 +2,40 @@ import React from "react";
 import "./footer.css";
 import logo from "../images/logo.png";
 import { FaInstagram, FaYoutube, FaTwitter, FaFacebook } from "react-icons/fa";
+import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <div className="footer-container">
       <div className="social-container">
         <hr />
-        <a
-          href="https://www.instagram.com/"
+        <Link
+          to="https://www.instagram.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
           <FaInstagram />
-        </a>
-        <a
-          href="https://www.youtube.com/"
+        </Link>
+        <Link
+          to="https://www.youtube.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
           <FaYoutube />
-        </a>
-        <a
-          href="https://www.twitter.com/"
+        </Link>
+        <Link
+          to="https://www.twitter.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
           <FaTwitter />
-        </a>
-        <a
-          href="https://www.facebook.com/"
+        </Link>
+        <Link
+          to="https://www.facebook.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
           <FaFacebook />
-        </a>
+        </Link>
         <hr />
       </div>
       <div className="footermiddle">
@@ -50,19 +51,19 @@ export default function Footer() {
       <div className="footerlink">
         <ul>
           <li>
-            <a href="#">Newsletter</a>
+            <Link href="#">Newsletter</Link>
           </li>
           <span className="separator"></span>
           <li>
-            <a href="#">Contact Us</a>
+            <Link to="#">Contact Us</Link>
           </li>
           <span className="separator"></span>
           <li>
-            <a href="#">Community</a>
+            <Link to="#">Community</Link>
           </li>
           <span className="separator"></span>
           <li>
-            <a href="#">Community</a>
+            <Link to="#">Community</Link>
           </li>
         </ul>
       </div>

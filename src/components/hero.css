@@ -83,7 +83,7 @@
 }
 .image-grid img:nth-child(3) {
   align-self: flex-start; /* Centers the third image */
-  height: 200px;
+  height: 210px;
   transform: translateY(-180px); /* Keeps the image elevated */
   transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
 }

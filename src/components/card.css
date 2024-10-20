@@ -17,8 +17,8 @@
 .cards {
   display: flex;
   gap: 12px;
-  max-width: 1130px;
-  margin: 0 auto;
+  max-width: 1310px;
+  margin: 12px auto;
   overflow: hidden;
   transition: transform 0.5s ease-in-out;
 }

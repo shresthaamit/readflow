@@ -2,6 +2,8 @@ import React from "react";
 import "./navbar.css";
 import logo from "../images/logo.png";
 
+import { Link } from "react-router-dom";
+
 import {
   FaInstagram,
   FaYoutube,
@@ -57,29 +59,29 @@ function Navbar() {
         <div className="navhead-right">
           <ul>
             <li>
-              <a href="#">Newsletter</a>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <a href="#">Contact Us</a>
+              <Link to="/books">Books</Link>
             </li>
             <li>
-              <a href="#">Community</a>
+              <Link to="#">Community</Link>
             </li>
           </ul>
           <div className="separator"></div>
           <div className="social-icons">
-            <a href="https://facebook.com" target="_blank" rel="noreferrer">
+            <Link to="https://facebook.com" target="_blank" rel="noreferrer">
               <FaFacebook />
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer">
+            </Link>
+            <Link to="https://twitter.com" target="_blank" rel="noreferrer">
               <FaTwitter />
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noreferrer">
+            </Link>
+            <Link to="https://instagram.com" target="_blank" rel="noreferrer">
               <FaInstagram />
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noreferrer">
+            </Link>
+            <Link to="https://youtube.com" target="_blank" rel="noreferrer">
               <FaYoutube />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
