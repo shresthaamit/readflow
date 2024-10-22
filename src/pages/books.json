@@ -1,0 +1,56 @@
+[
+    {
+      "img": "../src/images/banned.jfif",
+      "name": "Working",
+      "author": "Author",
+      "rating": "7.0",
+      "star": "../src/images/star.jpg",
+      "category": "Category",
+      "bookTitle": "Book Title"
+    },
+    {
+      "img": "../src/images/darlings.jfif",
+      "name": "Working",
+      "author": "Author",
+      "rating": "5.0",
+      "star": "../src/images/star.jpg",
+      "category": "Category",
+      "bookTitle": "Book Title"
+    },
+    {
+      "img": "../src/images/douglass.png",
+      "name": "Working",
+      "author": "Author",
+      "rating": "5.0",
+      "star": "../src/images/star.jpg",
+      "category": "Category",
+      "bookTitle": "Book Title"
+    },
+    {
+      "img": "../src/images/hollow.jfif",
+      "name": "Working",
+      "author": "Author",
+      "rating": "5.0",
+      "star": "../src/images/star.jpg",
+      "category": "Category",
+      "bookTitle": "Book Title"
+    },
+    {
+      "img": "../src/images/scent.jfif",
+      "name": "Working",
+      "author": "Author",
+      "rating": "5.0",
+      "star": "../src/images/star.jpg",
+      "category": "Category",
+      "bookTitle": "Book Title"
+    },{
+      "img": "../src/images/splinded.jfif",
+      "name": "Working",
+      "author": "Author",
+      "rating": "5.0",
+      "star": "../src/images/star.jpg",
+      "category": "Category",
+      "bookTitle": "Book Title"
+    }
+  ]
+  

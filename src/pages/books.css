@@ -1,0 +1,165 @@
+/* Google Font */
+/* @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"); */
+
+/* Book Section */
+.title {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bolder;
+  font-size: 47px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+.booksection {
+  display: flex;
+  gap: 30px; /* Larger gap for better spacing */
+  padding: 40px;
+  align-items: flex-start;
+}
+
+/* Book Search (30% width) */
+.booksearch {
+  flex: 1;
+  max-width: 30%;
+  background-color: #ffffff;
+  padding: 30px;
+  margin-top: 20px;
+  border-radius: 15px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.booksearch h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+/* Books Section (Remaining width) */
+.books {
+  flex: 4;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 books per row */
+  gap: 30px; /* Gap between book cards */
+  padding: 20px;
+}
+
+/* Individual Book Card */
+book {
+  background-color: white;
+  /* padding: 20px; */
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  /* box-shadow: 0px 6px 18px rgba(228, 109, 109, 0.1); */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.book:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Book Image */
+.bookimg {
+  width: 100%;
+  height: 300px;
+}
+
+.bookimg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+/* Card Details */ /* Card Details Section */
+.carddetail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 15px;
+  padding: 10px;
+  /* background-color: #f4f4f4; */
+  border-radius: 8px; /* Soft rounded corners */
+  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);  */
+}
+
+.carddetail img {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.carddetail span {
+  color: #34495e;
+  font-size: 14px;
+}
+
+.carddetail .rating {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f39c12; /* Gold for rating */
+}
+
+/* Book Title Styling */
+.book-title {
+  font-weight: 700;
+  font-size: 22px;
+
+  margin-bottom: 8px;
+  padding: 5px 0;
+  text-align: center;
+}
+
+.carddetail {
+  margin-top: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fcfbfb;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.detail1 {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.detail1 img {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  background-color: #f4f4f4;
+}
+
+.detail1 span {
+  color: #34495e;
+  font-size: 15px;
+}
+
+/* Author Section */
+.author {
+  font-weight: 500;
+  font-size: 16px;
+  color: #7f8c8d;
+  text-align: right;
+  flex-shrink: 0;
+  font-style: italic;
+}
+
+book {
+  padding: 20px; /* Adds padding around the book card */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+book:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+}
