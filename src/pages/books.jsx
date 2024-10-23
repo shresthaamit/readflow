@@ -5,12 +5,34 @@ import "./books.css";
 import books from "./books.json";
 
 function Books() {
+  const categories = [...new Set(books.map((book) => book.category))];
+  const authors = [...new Set(books.map((book) => book.author))];
+  console.log(categories);
   return (
     <>
       <h1 className="title">Find The Perfect Book</h1>
       <div className="booksection">
         <div className="booksearch">
-          <h1>Sesg</h1>
+          <div className="category">
+            <h1>Book Categories</h1>
+            <div className="category-buttons">
+              {categories.map((category, index) => (
+                <button key={index} className="category-button">
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="popularauthor">
+            <h1>Popular Authors</h1>
+            <div className="author-buttons">
+              {authors.map((author, index) => (
+                <button key={index} className="author-button">
+                  {author}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="books">
           {books.map((book) => (

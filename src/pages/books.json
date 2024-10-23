@@ -2,54 +2,54 @@
     {
       "img": "../src/images/banned.jfif",
       "name": "Working",
-      "author": "Author",
+      "author": "J. K. Rowling",
       "rating": "7.0",
       "star": "../src/images/star.jpg",
-      "category": "Category",
+      "category": "Science",
       "bookTitle": "Book Title"
     },
     {
       "img": "../src/images/darlings.jfif",
       "name": "Working",
-      "author": "Author",
+      "author": "Barbara Cartland",
       "rating": "5.0",
       "star": "../src/images/star.jpg",
-      "category": "Category",
+      "category": "Technology",
       "bookTitle": "Book Title"
     },
     {
       "img": "../src/images/douglass.png",
       "name": "Working",
-      "author": "Author",
+      "author": "Danielle Steel",
       "rating": "5.0",
       "star": "../src/images/star.jpg",
-      "category": "Category",
+      "category": "Engineering",
       "bookTitle": "Book Title"
     },
     {
       "img": "../src/images/hollow.jfif",
       "name": "Working",
-      "author": "Author",
+      "author": "J. K. Rowling",
       "rating": "5.0",
       "star": "../src/images/star.jpg",
-      "category": "Category",
+      "category": "Science",
       "bookTitle": "Book Title"
     },
     {
       "img": "../src/images/scent.jfif",
       "name": "Working",
-      "author": "Author",
+      "author": "William Shakespeare",
       "rating": "5.0",
       "star": "../src/images/star.jpg",
-      "category": "Category",
+      "category": "Programming",
       "bookTitle": "Book Title"
     },{
       "img": "../src/images/splinded.jfif",
       "name": "Working",
-      "author": "Author",
+      "author": "Dante Alighier",
       "rating": "5.0",
       "star": "../src/images/star.jpg",
-      "category": "Category",
+      "category": "Programming",
       "bookTitle": "Book Title"
     }
   ]
