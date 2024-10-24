@@ -3,11 +3,40 @@ import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 import "./books.css";
 import books from "./books.json";
+import { useState } from "react";
 
 function Books() {
   const categories = [...new Set(books.map((book) => book.category))];
   const authors = [...new Set(books.map((book) => book.author))];
-  console.log(categories);
+  // console.log(categories);
+  const [selectcategory, setSelectedCategory] = useState(null);
+  const [selectauthor, setSelectedAuthor] = useState(null);
+  // const filteredbooks = selectcategory
+  //   ? books.filter((book) => book.category === selectcategory)
+  //   : books;
+
+  // const authorbooks = selectauthor
+  //   ? books.filter((book) => book.author === selectauthor)
+  //   : books;
+
+  const filteredbooks = books.filter((book) => {
+    if (selectcategory || selectauthor) {
+      return book.category === selectcategory || book.author === selectauthor;
+    } else if (selectcategory) {
+      return book.category === selectcategory;
+    } else if (selectauthor) {
+      return book.author === selectauthor;
+    } else {
+      return true;
+    }
+  });
+  const handleclick = (category) => {
+    setSelectedCategory(category === selectcategory ? null : category);
+  };
+
+  const handleAuthorbuttons = (author) => {
+    setSelectedAuthor(author === selectauthor ? null : author);
+  };
   return (
     <>
       <h1 className="title">Find The Perfect Book</h1>
@@ -16,8 +45,21 @@ function Books() {
           <div className="category">
             <h1>Book Categories</h1>
             <div className="category-buttons">
+              <button
+                onClick={() => {
+                  setSelectedCategory(null);
+                  setSelectedAuthor(null);
+                }}
+                className="category-button"
+              >
+                All
+              </button>
               {categories.map((category, index) => (
-                <button key={index} className="category-button">
+                <button
+                  key={index}
+                  onClick={() => handleclick(category)}
+                  className="category-button"
+                >
                   {category}
                 </button>
               ))}
@@ -26,8 +68,21 @@ function Books() {
           <div className="popularauthor">
             <h1>Popular Authors</h1>
             <div className="author-buttons">
+              <button
+                onClick={() => {
+                  setSelectedCategory(null);
+                  setSelectedAuthor(null);
+                }}
+                className="author-button"
+              >
+                All
+              </button>
               {authors.map((author, index) => (
-                <button key={index} className="author-button">
+                <button
+                  key={index}
+                  onClick={() => handleAuthorbuttons(author)}
+                  className="author-button"
+                >
                   {author}
                 </button>
               ))}
@@ -35,7 +90,7 @@ function Books() {
           </div>
         </div>
         <div className="books">
-          {books.map((book) => (
+          {filteredbooks.map((book) => (
             <book>
               <div className="bookimg">
                 <img src={book.img} alt={book.bookTitle} />
