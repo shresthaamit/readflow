@@ -8,12 +8,15 @@ import Hero from "./components/hero";
 import Card from "./components/card";
 import Footer from "./components/footer";
 import Books from "./pages/books";
+import BookDetails from "./pages/booksdetail";
 // import "../src/components/card.css";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 function Book() {
   return <Books />;
 }
-
+function BookDetail() {
+  return <BookDetails />;
+}
 function Home() {
   const cardsData = [
     {
@@ -82,6 +85,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/books" element={<Book />} />
+        <Route path="/books/:id" element={<BookDetails />} />
       </Routes>
 
       <Footer />

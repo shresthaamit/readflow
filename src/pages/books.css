@@ -205,3 +205,25 @@ book:hover {
 .author-button:hover {
   background-color: #98bb19;
 }
+.bookbuttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 4px 0 4px;
+  align-items: center;
+}
+
+.bookbuttons .buttons {
+  display: inline-flex;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  color: black !important;
+}
+.bookbuttons .buttons span {
+  margin-left: 4px;
+}

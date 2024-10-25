@@ -2,10 +2,13 @@ import React from "react";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 import "./books.css";
+import { Link } from "react-router-dom";
 import books from "./books.json";
 import { useState } from "react";
+import { SlArrowRight } from "react-icons/sl";
+import { BsFillBookmarkHeartFill } from "react-icons/bs";
 
-function Books() {
+function Books({ book }) {
   const categories = [...new Set(books.map((book) => book.category))];
   const authors = [...new Set(books.map((book) => book.author))];
   // console.log(categories);
@@ -103,11 +106,25 @@ function Books() {
                   <span className="span">{book.category}</span>
                 </div>
 
-                <p className="author"> {book.author}</p>
+                <p className="author"> {book.author.split(" ")[0]}</p>
               </div>
               <p>
                 <span className="book-title">{book.bookTitle}</span>
               </p>
+              <div className="bookbuttons">
+                <Link to={`/books/${book.id}`} className="buttons">
+                  Go to Detail
+                  <span>
+                    <SlArrowRight />
+                  </span>
+                </Link>
+                <Link to="button" className="buttons">
+                  Add to favourite
+                  <span>
+                    <BsFillBookmarkHeartFill />
+                  </span>
+                </Link>
+              </div>
             </book>
           ))}
         </div>

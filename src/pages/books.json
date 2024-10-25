@@ -1,5 +1,6 @@
 [
     {
+      "id":1,
       "img": "../src/images/banned.jfif",
       "name": "Working",
       "author": "J. K. Rowling",
@@ -9,6 +10,7 @@
       "bookTitle": "Book Title"
     },
     {
+      "id":2,
       "img": "../src/images/darlings.jfif",
       "name": "Working",
       "author": "Barbara Cartland",
