@@ -7,7 +7,8 @@
       "rating": "7.0",
       "star": "../src/images/star.jpg",
       "category": "Science",
-      "bookTitle": "Book Title"
+      "bookTitle": "Book Title",
+      "details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages"
     },
     {
       "id":2,
@@ -17,7 +18,8 @@
       "rating": "5.0",
       "star": "../src/images/star.jpg",
       "category": "Technology",
-      "bookTitle": "Book Title"
+      "bookTitle": "Book Title",
+      "details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages"
     },
     {
       "img": "../src/images/douglass.png",
@@ -26,7 +28,8 @@
       "rating": "5.0",
       "star": "../src/images/star.jpg",
       "category": "Engineering",
-      "bookTitle": "Book Title"
+      "bookTitle": "Book Title",
+      "details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages"
     },
     {
       "img": "../src/images/hollow.jfif",
@@ -35,7 +38,8 @@
       "rating": "5.0",
       "star": "../src/images/star.jpg",
       "category": "Science",
-      "bookTitle": "Book Title"
+      "bookTitle": "Book Title",
+      "details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages"
     },
     {
       "img": "../src/images/scent.jfif",
@@ -44,7 +48,8 @@
       "rating": "5.0",
       "star": "../src/images/star.jpg",
       "category": "Programming",
-      "bookTitle": "Book Title"
+      "bookTitle": "Book Title",
+      "details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages"
     },{
       "img": "../src/images/splinded.jfif",
       "name": "Working",
@@ -52,7 +57,8 @@
       "rating": "5.0",
       "star": "../src/images/star.jpg",
       "category": "Programming",
-      "bookTitle": "Book Title"
+      "bookTitle": "Book Title",
+      "details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages"
     }
   ]
   
