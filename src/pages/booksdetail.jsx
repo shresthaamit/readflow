@@ -1,5 +1,6 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import man from "../images/man1.jpg";
 import books from "./books.json";
 import { LuDownload } from "react-icons/lu";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
@@ -48,9 +49,12 @@ export default function BookDetails() {
                   <option value="4">4</option>
                   <option value="5">5</option>
                 </select>
-                <button type="button" className="send-button">
+                <button type="button" className="action send-button">
                   Send
                 </button>
+                <Link to="/books" className="action back-button">
+                  Go to Books
+                </Link>
               </div>
             </div>
             {/* <div className="qrsection"> */}
@@ -71,9 +75,37 @@ export default function BookDetails() {
           </div>
         </div>
       </div>
+      <div class="reviewdetailsection">
+        <AllReview />
+      </div>
 
       {/* <p>Book ID: {id}</p> */}
-      {/* <p>Author: {book.author}</p> */}
+      {/* <p>Author: {book.author }</p> */}
+    </div>
+  );
+}
+function AllReview() {
+  return (
+    <div className="reviewdetailsection">
+      <h1>Review of other readers</h1>
+      <div className="review">
+        <div className="userimg">
+          <img src={man} alt="User Image" />
+        </div>
+        <div className="userdetail">
+          <div className="namedate">
+            <h4>User Name</h4>
+            <span>2022-01-01</span>
+          </div>
+          <h3>Rating: 5/5</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+            sagittis, metus eget ultricies scelerisque, velit velit fringilla
+            libero, vel fringilla nisi nunc vel lectus.
+          </p>
+        </div>
+      </div>
+      {/* Add more review */}
     </div>
   );
 }

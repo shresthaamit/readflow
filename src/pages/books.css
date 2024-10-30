@@ -116,7 +116,7 @@ book {
 }
 
 .carddetail {
-  margin-top: 2px;
+  margin-top: 9px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -232,10 +232,11 @@ book:hover {
   margin-left: 40px;
 }
 /* BOOKSDETAIL */
-.detailpage {
+.detailpage,
+.reviewdetailsection {
   width: 95%;
-  margin: 10px auto;
-  height: 100vh;
+  margin: 20px auto;
+  /* height: 100vh; */
 }
 .bookdetail {
   display: flex;
@@ -323,14 +324,22 @@ book:hover {
   font-size: 14px;
 }
 
-.send-button {
+.action {
   padding: 8px 16px;
-  background-color: #4caf50;
+
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s;
+}
+.action.send-button {
+  background-color: #4caf50;
+}
+.action.back-button {
+  outline: none;
+  background-color: #083698;
+  text-decoration: none;
 }
 
 .send-button:hover {
@@ -342,4 +351,36 @@ book:hover {
   margin-left: 70px;
   border: 1px solid rgb(24, 23, 23);
   /* margin-bottom: 80px; */
+}
+/* Review Description */
+.reviewdetailsection h1 {
+  text-align: center;
+}
+.review {
+  border: 1px solid silver;
+  border-radius: 10px;
+  display: flex;
+  margin-top: 12px;
+  gap: 10px;
+  padding: 10px;
+  /* margin-top: 30px; */
+}
+.review .userimg {
+  height: 70px;
+  width: 70px;
+}
+.review .userimg img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.review .userdetail .namedate,
+h3,
+p {
+  margin: 10px;
+}
+.namedate {
+  display: flex;
+  justify-content: space-between;
 }
