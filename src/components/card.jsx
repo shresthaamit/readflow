@@ -2,22 +2,45 @@ import React from "react";
 import book from "../images/Working.gif";
 import star from "../images/star.jpg";
 import "./card.css";
-export default function Card(props) {
+import { SlArrowRight } from "react-icons/sl";
+import { BsFillBookmarkHeartFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
+export default function Card({ book }) {
   return (
     <>
       <div className="cards">
         <div className="card">
-          <img src={props.img} alt="Working" />
+          <img src={book.img} alt="Working" />
           <div className="carddetail">
-            <img src={props.star} alt="ratestar" />
-            <span>{props.rating}</span>
-            <span className="span">(6) • </span>
-            <span className="span">{props.category}</span>
+            <div className="left-section">
+              <img src={book.star} alt="ratestar" />
+              <span>{book.rating}</span>
+              <span className="span">(6)</span>
+            </div>
+            <div className="right-section">
+              <span className="span">• {book.category}</span>
+            </div>
           </div>
-          <p>
-            <span className="spanbold">{props.bookTitle}</span>
-          </p>
-          <p>By: {props.author}</p>
+          <div className="title-author-container">
+            <p className="left-part">
+              <span className="spanbold">{book.bookTitle}</span>
+            </p>
+            <p className="right-part">By: {book.author}</p>
+          </div>
+          <div className="bookbuttons">
+            <Link to={`/books/${book.id}`} className="buttons">
+              Detail
+              <span>
+                <SlArrowRight />
+              </span>
+            </Link>
+            <Link to="button" className="buttons">
+              Add to favourite
+              <span>
+                <BsFillBookmarkHeartFill />
+              </span>
+            </Link>
+          </div>
         </div>
       </div>
     </>

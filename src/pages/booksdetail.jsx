@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import man from "../images/man1.jpg";
+
 import books from "./books.json";
 import { LuDownload } from "react-icons/lu";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
+import reviews from "./reviews.json";
 import "./books.css";
 // import QRCode from "qrcode.react";
 import placeholderQR from "../images/qr.png";
@@ -76,7 +77,7 @@ export default function BookDetails() {
         </div>
       </div>
       <div class="reviewdetailsection">
-        <AllReview />
+        <AllReview reviews={reviews} />
       </div>
 
       {/* <p>Book ID: {id}</p> */}
@@ -84,28 +85,42 @@ export default function BookDetails() {
     </div>
   );
 }
-function AllReview() {
+
+function AllReview({ reviews }) {
+  const [showAll, setShowAll] = useState(false);
+  const reviewToShow = showAll ? reviews : reviews.slice(0, 3);
+
+  const toggleShowAll = () => {
+    setShowAll(!showAll);
+  };
+
   return (
     <div className="reviewdetailsection">
       <h1>Review of other readers</h1>
-      <div className="review">
-        <div className="userimg">
-          <img src={man} alt="User Image" />
-        </div>
-        <div className="userdetail">
-          <div className="namedate">
-            <h4>User Name</h4>
-            <span>2022-01-01</span>
+      {reviewToShow.map((review, index) => (
+        <div key={index} className="review">
+          <div className="userimg">
+            <img src={review.img} alt="User Image" />
           </div>
-          <h3>Rating: 5/5</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-            sagittis, metus eget ultricies scelerisque, velit velit fringilla
-            libero, vel fringilla nisi nunc vel lectus.
-          </p>
+          <div className="userdetail">
+            <div className="namedate">
+              <h4>{review.username}</h4>
+              <span>2022-01-01</span>
+            </div>
+            <h3>Rating: {review.rating}/5</h3>
+            <p>{review.text}</p>
+          </div>
         </div>
+      ))}
+
+      {/* "See More" / "See Less" Button */}
+      <div className="button-container">
+        {reviews.length > 3 && (
+          <button onClick={toggleShowAll} className="toggle-button">
+            {showAll ? "See Less" : "See More"}
+          </button>
+        )}
       </div>
-      {/* Add more review */}
     </div>
   );
 }

@@ -324,16 +324,18 @@ book:hover {
   font-size: 14px;
 }
 
-.action {
+.action,
+.toggle-button {
   padding: 8px 16px;
-
+  cursor: pointer;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
-.action.send-button {
+.action.send-button,
+.toggle-button {
   background-color: #4caf50;
 }
 .action.back-button {
@@ -353,6 +355,7 @@ book:hover {
   /* margin-bottom: 80px; */
 }
 /* Review Description */
+
 .reviewdetailsection h1 {
   text-align: center;
 }
@@ -362,6 +365,7 @@ book:hover {
   display: flex;
   margin-top: 12px;
   gap: 10px;
+  width: 100%;
   padding: 10px;
   /* margin-top: 30px; */
 }
@@ -383,4 +387,16 @@ p {
 .namedate {
   display: flex;
   justify-content: space-between;
+}
+
+.userdetail {
+  flex-grow: 1; /* Ensures user details take available space */
+}
+.button-container {
+  margin-top: 12px;
+  width: 100%;
+  margin-right: 0px;
+  display: flex;
+  justify-content: flex-end;
+  align-self: flex-end;
 }

@@ -1,0 +1,26 @@
+[
+    {
+      "img": "../src/images/banned.jfif",
+      "username": "User One",
+      "rating": 5,
+      "text": "Amazing book! Highly recommend it."
+    },
+    {
+      "img": "../src/images/man1.jpg",
+      "username": "User Two",
+      "rating": 4,
+      "text": "Great read with some insightful points."
+    },
+    {
+        "img": "../src/images/man1.jpg",
+        "username": "User Two",
+        "rating": 4,
+        "text": "Great read with some insightful points."
+      },
+        {
+        "img": "../src/images/man1.jpg",
+        "username": "User Two",
+        "rating": 4,
+        "text": "Great read with some insightful points."
+      }
+  ]

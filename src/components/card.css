@@ -29,22 +29,86 @@
   border-radius: 7px;
   /* box-shadow: 0px 2.98256px 7.4564px rgba(221, 49, 49, 0.1); */
 }
-.card .carddetail {
+.carddetail {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin: 4px 0;
-}
-.card .carddetail img {
-  width: 30px;
-  height: 30px;
-}
-.span {
-  color: #918e9b;
 }
 
-.spanbold {
-  font-weight: bold;
+.left-section {
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
-.card p {
-  margin: 4px;
+
+.right-section {
+  text-align: right;
+}
+.title-author-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-part {
+  text-align: left;
+}
+
+.right-part {
+  text-align: right;
+  color: #777; /* Optional: styling for the author text */
+}
+
+.bookbuttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 4px 0 4px;
+  align-items: center;
+}
+
+.bookbuttons .buttons {
+  display: inline-flex;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+
+  color: black !important;
+}
+.bookbuttons .buttons span {
+  margin-left: 4px;
+}
+.bookbuttons .style {
+  margin-left: 40px;
+}
+.head-container {
+  margin-top: 27px;
+  text-align: center;
+}
+.head-container h4 {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: bold;
+  font-size: 27px;
+}
+
+.head {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  position: relative;
+  padding: 11px 10px;
+}
+
+.head::before,
+.head::after {
+  content: "";
+  display: inline-block;
+  width: 40%;
+  border-bottom: 2px solid #110f0f;
+  vertical-align: middle;
+  margin: 0 10px;
 }

@@ -9,7 +9,8 @@ import Card from "./components/card";
 import Footer from "./components/footer";
 import Books from "./pages/books";
 import BookDetails from "./pages/booksdetail";
-// import "../src/components/card.css";
+
+import "../src/components/card.css";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 function Book() {
   return <Books />;
@@ -20,59 +21,66 @@ function BookDetail() {
 function Home() {
   const cardsData = [
     {
-      img: "../src/images/Working.gif",
+      id: 1,
+      img: "../src/images/banned.jfif",
       name: "Working",
-      author: "Author",
+      author: "J. K. Rowling",
       rating: "7.0",
       star: "../src/images/star.jpg",
-      category: "Category",
+      category: "Science",
       bookTitle: "Book Title",
+      details:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages",
     },
     {
-      img: "../src/images/heroimg1.jpg",
+      id: 2,
+      img: "../src/images/darlings.jfif",
       name: "Working",
-      author: "Author",
+      author: "Barbara Cartland",
       rating: "5.0",
       star: "../src/images/star.jpg",
-      category: "Category",
+      category: "Technology",
       bookTitle: "Book Title",
+      details:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages",
     },
     {
-      img: "../src/images/heroimg3.png",
+      id: 3,
+      img: "../src/images/douglass.png",
       name: "Working",
-      author: "Author",
+      author: "Danielle Steel",
       rating: "5.0",
       star: "../src/images/star.jpg",
-      category: "Category",
+      category: "Engineering",
       bookTitle: "Book Title",
+      details:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages",
     },
     {
-      img: "../src/images/heroimg4.png",
+      id: 4,
+      img: "../src/images/hollow.jfif",
       name: "Working",
-      author: "Author",
+      author: "J. K. Rowling",
       rating: "5.0",
       star: "../src/images/star.jpg",
-      category: "Category",
+      category: "Science",
       bookTitle: "Book Title",
+      details:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages",
     },
   ];
 
   return (
     <>
       <Hero />
-      <div className="cards">
-        {cardsData.map((card, index) => (
-          <Card
-            key={index}
-            img={card.img}
-            name={card.name}
-            author={card.author}
-            rating={card.rating}
-            star={card.star}
-            category={card.category}
-            bookTitle={card.bookTitle}
-          />
-        ))}
+      <div className="head-container">
+        <h1 className="head"> Enticing New Releases</h1>
+        <p>Makes the updates feel personalized and thoughtfully selected.</p>
+        <div className="cards">
+          {cardsData.map((card) => (
+            <Card key={card.id} book={card} />
+          ))}
+        </div>
       </div>
     </>
   );
