@@ -6,6 +6,7 @@ import { LuDownload } from "react-icons/lu";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
 import reviews from "./reviews.json";
 import "./books.css";
+import RecommendBooks from "../components/recommended";
 // import QRCode from "qrcode.react";
 import placeholderQR from "../images/qr.png";
 export default function BookDetails() {
@@ -76,6 +77,7 @@ export default function BookDetails() {
           </div>
         </div>
       </div>
+      <RecommendBooks />
       <div class="reviewdetailsection">
         <AllReview reviews={reviews} />
       </div>

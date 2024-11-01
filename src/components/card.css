@@ -61,11 +61,13 @@
 
 .bookbuttons {
   display: flex;
-  justify-content: space-between;
-  margin: 12px 4px 0 4px;
+  /* justify-content: space-between; */
+  margin: 6px 4px 0 4px;
   align-items: center;
 }
-
+.buttonss {
+  justify-content: space-between;
+}
 .bookbuttons .buttons {
   display: inline-flex;
   padding: 10px;
@@ -80,7 +82,7 @@
   color: black !important;
 }
 .bookbuttons .buttons span {
-  margin-left: 4px;
+  margin-left: 2px;
 }
 .bookbuttons .style {
   margin-left: 40px;
@@ -107,7 +109,7 @@
 .head::after {
   content: "";
   display: inline-block;
-  width: 40%;
+  width: 32%;
   border-bottom: 2px solid #110f0f;
   vertical-align: middle;
   margin: 0 10px;

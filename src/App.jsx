@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
-
+import ScrollToTop from "./components/ScrollToTop";
 import { Component } from "react";
 import Navbar from "./components/navbar";
 import Hero from "./components/hero";
@@ -9,15 +9,18 @@ import Card from "./components/card";
 import Footer from "./components/footer";
 import Books from "./pages/books";
 import BookDetails from "./pages/booksdetail";
-
+import RecommendBooks from "./components/recommended";
 import "../src/components/card.css";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 function Book() {
   return <Books />;
 }
-function BookDetail() {
-  return <BookDetails />;
-}
+// function BookDetail() {
+//   return <BookDetails />;
+// }
+// function RecommendBooksComponent() {
+//   return <RecommendBooks />;
+// }
 function Home() {
   const cardsData = [
     {
@@ -82,12 +85,14 @@ function Home() {
           ))}
         </div>
       </div>
+      <RecommendBooks />
     </>
   );
 }
 function App() {
   return (
     <div>
+      <ScrollToTop />
       <Navbar />
 
       <Routes>

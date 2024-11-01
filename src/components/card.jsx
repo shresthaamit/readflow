@@ -27,7 +27,7 @@ export default function Card({ book }) {
             </p>
             <p className="right-part">By: {book.author}</p>
           </div>
-          <div className="bookbuttons">
+          <div className="bookbuttons buttonss">
             <Link to={`/books/${book.id}`} className="buttons">
               Detail
               <span>
