@@ -10,6 +10,7 @@ import Footer from "./components/footer";
 import Books from "./pages/books";
 import BookDetails from "./pages/booksdetail";
 import RecommendBooks from "./components/recommended";
+import Profile from "./pages/profile";
 import "../src/components/card.css";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 function Book() {
@@ -99,6 +100,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/books" element={<Book />} />
         <Route path="/books/:id" element={<BookDetails />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
 
       <Footer />
