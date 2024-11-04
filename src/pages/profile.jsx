@@ -6,7 +6,13 @@ import user from "../images/heroimg4.png";
 import { useState } from "react";
 export default function Profile() {
   const [activeTab, setActiveTab] = useState("downloads");
-
+  const totalBooks = books.length;
+  const downloadedBooksCount = books.filter(
+    (book) => book.historyType === "download"
+  ).length;
+  const favouriteBooksCount = books.filter(
+    (book) => book.historyType === "favourite"
+  ).length;
   const displayedBooks = books.filter((book) =>
     activeTab === "downloads"
       ? book.historyType === "download"
@@ -34,15 +40,15 @@ export default function Profile() {
             <div className="profile-stats">
               <div className="stat">
                 <p>Total Books</p>
-                <p>100</p>
+                <p>{totalBooks}</p>
               </div>
               <div className="stat">
                 <p>Downloaded Books</p>
-                <p>50</p>
+                <p>{downloadedBooksCount}</p>
               </div>
               <div className="stat">
                 <p>Favourite Books</p>
-                <p>30</p>
+                <p>{favouriteBooksCount}</p>
               </div>
             </div>
           </div>
