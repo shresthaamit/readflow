@@ -3,7 +3,15 @@ import RecommendBooks from "../components/recommended";
 import books from "./books.json";
 import "./profile.css";
 import user from "../images/heroimg4.png";
+import { useState } from "react";
 export default function Profile() {
+  const [activeTab, setActiveTab] = useState("downloads");
+
+  const displayedBooks = books.filter((book) =>
+    activeTab === "downloads"
+      ? book.historyType === "download"
+      : book.historyType === "favourite"
+  );
   return (
     <>
       <div className="profilehead">
@@ -42,16 +50,26 @@ export default function Profile() {
         <div className="profilehistory">
           <div className="profilenav">
             <ul>
-              <li>
-                <a href="#">Download History</a>
+              <li key="download">
+                <button
+                  className={activeTab === "downloads" ? "active" : ""}
+                  onClick={() => setActiveTab("downloads")}
+                >
+                  Download History
+                </button>
               </li>
-              <li>
-                <a href="#">Favourite History</a>
+              <li key="favourite">
+                <button
+                  className={activeTab === "favourites" ? "active" : ""}
+                  onClick={() => setActiveTab("favourites")}
+                >
+                  Favourite History
+                </button>
               </li>
             </ul>
           </div>
           <div className="navbooks">
-            {books.map((book) => (
+            {displayedBooks.map((book) => (
               <Card key={book.id} book={book} />
             ))}
           </div>

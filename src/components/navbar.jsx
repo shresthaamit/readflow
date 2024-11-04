@@ -106,9 +106,9 @@ function Navbar() {
           <div className="navsearch">
             <Searchbar />
           </div>
-          <div className="account-icon" aria-label="Account">
+          <Link to="/profile" className="account-icon" aria-label="Account">
             <FaRegUser />
-          </div>
+          </Link>
         </div>
       </div>
       <div className="navtail"></div>
