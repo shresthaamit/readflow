@@ -3,6 +3,7 @@ import "./hero.css";
 import heroImg1 from "../images/ebook1.gif";
 import heroImg3 from "../images/ebook2.gif";
 import heroImg2 from "../images/ebook3.gif";
+import { Link } from "react-router-dom";
 
 function Hero() {
   const images = [heroImg1, heroImg2, heroImg3];
@@ -18,7 +19,9 @@ function Hero() {
           Stay up-to-date with your favorite sources and stay informed about the
           world's events and happenings.
         </p>
-        <button>Go to Books Page</button>
+        <Link to="/books" className="button">
+          Go to Books Page
+        </Link>
       </div>
       <div className="heroright">
         <div className="image-grid">

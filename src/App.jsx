@@ -11,6 +11,7 @@ import Books from "./pages/books";
 import BookDetails from "./pages/booksdetail";
 import RecommendBooks from "./components/recommended";
 import Profile from "./pages/profile";
+import Login from "./pages/login";
 import "../src/components/card.css";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 function Book() {
@@ -101,6 +102,7 @@ function App() {
         <Route path="/books" element={<Book />} />
         <Route path="/books/:id" element={<BookDetails />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
 
       <Footer />

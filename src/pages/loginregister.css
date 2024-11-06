@@ -1,0 +1,123 @@
+/* login.css */
+
+.loginpage {
+  display: grid;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 70%;
+  margin: 40px auto !important;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  /* justify-content: center; */
+  /* height: 100vh; */
+  /* background-color: #f9f9f9; */
+
+  padding: 20px;
+}
+
+.loginform,
+.loginimg {
+  width: 300px;
+  background-color: #fff;
+
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* align-items: center; */
+  padding: 40px;
+}
+
+.loginform {
+  max-width: 100%; /* Ensures both sections take equal width */
+}
+
+.loginform h1 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.loginform p {
+  color: #777;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1em;
+}
+
+.loginform form {
+  width: 100%;
+}
+
+.loginform label {
+  display: block;
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.loginform input[type="email"],
+.loginform input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1em;
+  color: #333;
+}
+
+.loginform input[type="submit"] {
+  display: none; /* Hides the submit button in the form */
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+}
+
+.submit-button {
+  background-color: #4caf50;
+}
+
+.cancel-button {
+  margin-left: 12px;
+  background-color: #f44336;
+}
+/* .loginimg {
+ 
+} */
+.loginimg img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+  .loginpage {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .loginform,
+  .loginimg {
+    width: 100%;
+  }
+
+  .loginimg img {
+    width: 100%;
+    height: auto;
+  }
+}

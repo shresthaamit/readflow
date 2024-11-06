@@ -7,7 +7,7 @@
 
 .heroleft {
   /* display: flex; */
-  margin-top: 10%;
+  margin-top: 8%;
   margin-left: 4%;
   flex: 2;
   padding: 20px;
@@ -28,12 +28,15 @@
 }
 .heroleft .para {
   font-size: 17px;
+  line-height: 22px;
   margin-top: 21px;
   text-align: justify;
 }
-.heroleft button {
+.heroleft .button {
+  text-decoration: none;
   display: flex;
   margin-top: 17px;
+  width: 22%;
   padding: 9px;
   border-radius: 4px;
   font-size: 16px;
