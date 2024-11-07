@@ -40,7 +40,8 @@
 .loginform p {
   color: #777;
   margin-bottom: 20px;
-  text-align: center;
+  margin-left: 0;
+  /* text-align: center; */
   font-size: 1em;
 }
 
@@ -56,11 +57,12 @@
 }
 
 .loginform input[type="email"],
-.loginform input[type="password"] {
+.loginform input[type="password"],
+.loginform input[type="text"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid #a09b9b;
   border-radius: 4px;
   font-size: 1em;
   color: #333;
@@ -103,6 +105,13 @@
   border-radius: 8px;
   object-fit: cover;
 }
+.registerimg img {
+  max-width: 70%;
+  height: 70vh; /* This makes the image fill the container height */
+  margin: 0 auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
 
 /* Responsive Design for Smaller Screens */
 @media (max-width: 768px) {
@@ -112,11 +121,13 @@
   }
 
   .loginform,
-  .loginimg {
+  .loginimg,
+  .registerimg {
     width: 100%;
   }
 
-  .loginimg img {
+  .loginimg img,
+  .registerimg img {
     width: 100%;
     height: auto;
   }
