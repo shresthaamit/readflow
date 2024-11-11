@@ -113,7 +113,7 @@ function Books({ book }) {
               </p>
               <div className="bookbuttons">
                 <Link to={`/books/${book.id}`} className="buttons">
-                  Go to Detail
+                  Detail
                   <span>
                     <SlArrowRight />
                   </span>
