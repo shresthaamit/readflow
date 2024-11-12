@@ -12,6 +12,7 @@ export default function Register() {
   });
   const [error, setError] = useState();
   const [success, setSuccess] = useState(false);
+  const [message, setMessage] = useState("");
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -35,6 +36,10 @@ export default function Register() {
       if (formData.username === "existingUser") {
         setError("Username already taken.");
       } else {
+        localStorage.setItem(
+          formData.email,
+          JSON.stringify({ password: formData.password })
+        );
         setSuccess(true);
         console.log("Registration successful");
       }
