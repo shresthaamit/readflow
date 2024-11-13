@@ -26,8 +26,15 @@ export default function Login() {
       console.log("Please fill in all fields");
       return;
     }
+    const storedUser = JSON.parse(localStorage.getItem(formData.email));
+    if (storedUser && storedUser.password === formData.password) {
+      console.log("Login successful");
+    } else {
+      setError("Invalid email or password");
+      console.log("Invalid email or password");
+      return;
+    }
     // Add your login logic here
-    console.log("Login successful");
   };
   const handleCancel = () => {
     setFormData({
