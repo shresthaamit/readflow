@@ -29,6 +29,7 @@ export default function Login() {
     const storedUser = JSON.parse(localStorage.getItem(formData.email));
     if (storedUser && storedUser.password === formData.password) {
       console.log("Login successful");
+      setSuccess(true);
     } else {
       setError("Invalid email or password");
       console.log("Invalid email or password");
