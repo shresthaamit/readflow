@@ -141,3 +141,86 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
+/* EDITPROFILE */
+
+/* profile.css */
+
+/* General form styling */
+.edit-profile {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.edit-profile label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.edit-profile input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.edit-profile input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.edit-profile button {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 1rem;
+}
+
+.edit-profile button:hover {
+  background-color: #0056b3;
+}
+
+.edit-profile button[type="button"] {
+  background-color: #6c757d;
+  margin-top: 0.5rem;
+}
+
+.edit-profile button[type="button"]:hover {
+  background-color: #5a6268;
+}
+.edit-profile .back {
+  background-color: #3623b499;
+}
+.edit-profile .back:hover {
+  background-color: coral;
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .edit-profile {
+    padding: 1.5rem;
+  }
+
+  .edit-profile input {
+    padding: 0.6rem;
+  }
+
+  .edit-profile button {
+    font-size: 0.9rem;
+  }
+}

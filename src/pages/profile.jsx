@@ -1,10 +1,12 @@
 import Card from "../components/card";
 import RecommendBooks from "../components/recommended";
 import books from "./books.json";
+import EditProfile from "./editProfile";
 import "./profile.css";
 import user from "../images/heroimg4.png";
 import { useState } from "react";
 export default function Profile() {
+  const [activeSection, setActiveSection] = useState("history");
   const [activeTab, setActiveTab] = useState("downloads");
   const totalBooks = books.length;
   const downloadedBooksCount = books.filter(
@@ -34,7 +36,9 @@ export default function Profile() {
             <img src={user} alt="Profile Pic" />
             <h2>John Doe</h2>
             <p>User since: 2022-01-01</p>
-            <button>Edit Profile</button>
+            <button onClick={() => setActiveSection("edit")}>
+              Edit Profile
+            </button>
           </div>
           <div className="profileright">
             <div className="profile-stats">
@@ -53,33 +57,37 @@ export default function Profile() {
             </div>
           </div>
         </div>
-        <div className="profilehistory">
-          <div className="profilenav">
-            <ul>
-              <li key="download">
-                <button
-                  className={activeTab === "downloads" ? "active" : ""}
-                  onClick={() => setActiveTab("downloads")}
-                >
-                  Download History
-                </button>
-              </li>
-              <li key="favourite">
-                <button
-                  className={activeTab === "favourites" ? "active" : ""}
-                  onClick={() => setActiveTab("favourites")}
-                >
-                  Favourite History
-                </button>
-              </li>
-            </ul>
+        {activeSection === "history" ? (
+          <div className="profilehistory">
+            <div className="profilenav">
+              <ul>
+                <li key="download">
+                  <button
+                    className={activeTab === "downloads" ? "active" : ""}
+                    onClick={() => setActiveTab("downloads")}
+                  >
+                    Download History
+                  </button>
+                </li>
+                <li key="favourite">
+                  <button
+                    className={activeTab === "favourites" ? "active" : ""}
+                    onClick={() => setActiveTab("favourites")}
+                  >
+                    Favourite History
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div className="navbooks">
+              {displayedBooks.map((book) => (
+                <Card key={book.id} book={book} />
+              ))}
+            </div>
           </div>
-          <div className="navbooks">
-            {displayedBooks.map((book) => (
-              <Card key={book.id} book={book} />
-            ))}
-          </div>
-        </div>
+        ) : (
+          <EditProfile onBack={() => setActiveSection("history")} />
+        )}
       </div>
       {/* </div> */}
     </>
