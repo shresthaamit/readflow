@@ -132,3 +132,72 @@
 
   font-size: 20px; /* Adjust icon size */
 }
+@media (max-width: 768px) {
+  .navhead {
+    flex-wrap: wrap;
+  }
+
+  .navhead .navhead-left,
+  .navhead .navhead-right {
+    margin: 5px 0;
+  }
+
+  .navbody .navsearch {
+    flex: 1;
+    margin: 10px 0;
+  }
+
+  .navbodyright {
+    justify-content: center;
+  }
+}
+
+/* Responsive Adjustments for Mobile */
+@media (max-width: 480px) {
+  .navhead {
+    flex-direction: column; /* Stack elements vertically */
+    padding: 10px;
+  }
+
+  .navhead .navhead-left {
+    text-align: center; /* Center align logo or title */
+    margin-bottom: 10px;
+  }
+
+  .navbody {
+    flex-direction: column; /* Stack search bar and icons */
+  }
+
+  .navbody .navsearch {
+    margin: 10px 0;
+  }
+
+  .navbody .navbodyright {
+    justify-content: center;
+  }
+
+  .navhead .navhead-right ul {
+    display: none; /* Hide navigation links on mobile */
+  }
+
+  .navbody .navimage img {
+    width: 50px; /* Smaller logo for mobile */
+  }
+
+  .searchbar {
+    flex-direction: column; /* Stack input and button vertically */
+  }
+
+  .searchbar input {
+    width: 100%; /* Full-width input */
+  }
+
+  .search-icon {
+    margin: 10px auto 0; /* Center align button */
+    width: 100%; /* Full-width button */
+  }
+
+  .navbodyright .account-icon {
+    margin: 10px auto;
+  }
+}
