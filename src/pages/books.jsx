@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 import "./books.css";
@@ -8,12 +8,11 @@ import { useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
 
-function Books({ book }) {
-  const categories = [...new Set(books.map((book) => book.category))];
-  const authors = [...new Set(books.map((book) => book.author))];
+function Books() {
   // console.log(categories);
   const [selectcategory, setSelectedCategory] = useState(null);
   const [selectauthor, setSelectedAuthor] = useState(null);
+  const [books, setBooks] = useState(null);
   // const filteredbooks = selectcategory
   //   ? books.filter((book) => book.category === selectcategory)
   //   : books;
@@ -22,7 +21,10 @@ function Books({ book }) {
   //   ? books.filter((book) => book.author === selectauthor)
   //   : books;
 
-  const filteredbooks = books.filter((book) => {
+  const categories = [...new Set(books?.map((book) => book.category))];
+  const authors = [...new Set(books?.map((book) => book.author))];
+
+  const filteredbooks = books?.filter((book) => {
     if (selectcategory || selectauthor) {
       return book.category === selectcategory || book.author === selectauthor;
     } else if (selectcategory) {
@@ -33,6 +35,17 @@ function Books({ book }) {
       return true;
     }
   });
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const response = await fetch("http://localhost:8000/books/");
+      const data = await response.json();
+      console.log(data);
+      setBooks(data.results);
+    };
+    fetchBooks();
+  }, []);
+
   const handleclick = (category) => {
     setSelectedCategory(category === selectcategory ? null : category);
   };
@@ -93,7 +106,7 @@ function Books({ book }) {
           </div>
         </div>
         <div className="books">
-          {filteredbooks.map((book) => (
+          {filteredbooks?.map((book) => (
             <book>
               <div className="bookimg">
                 <img src={book.img} alt={book.bookTitle} />
@@ -109,7 +122,7 @@ function Books({ book }) {
                 <p className="author"> {book.author.split(" ")[0]}</p>
               </div>
               <p>
-                <span className="book-title">{book.bookTitle}</span>
+                <span className="book-title">{book.title}</span>
               </p>
               <div className="bookbuttons">
                 <Link to={`/books/${book.id}`} className="buttons">
