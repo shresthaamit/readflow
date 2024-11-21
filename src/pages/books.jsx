@@ -40,8 +40,9 @@ function Books() {
     const fetchBooks = async () => {
       const response = await fetch("http://localhost:8000/books/");
       const data = await response.json();
-      console.log(data);
+
       setBooks(data.results);
+      console.log(data);
     };
     fetchBooks();
   }, []);
