@@ -40,9 +40,8 @@ function Books() {
     const fetchBooks = async () => {
       const response = await fetch("http://localhost:8000/books/");
       const data = await response.json();
-
-      setBooks(data.results);
       console.log(data);
+      setBooks(data.results);
     };
     fetchBooks();
   }, []);
@@ -110,7 +109,12 @@ function Books() {
           {filteredbooks?.map((book) => (
             <book>
               <div className="bookimg">
-                <img src={book.img} alt={book.bookTitle} />
+                <img
+                  src={`http://localhost:8000${book.image}`}
+                  alt={book.title}
+                />
+
+                {/* <img src={book.image} alt={book.bookTitle} /> */}
               </div>
               <div className="carddetail">
                 <div className="detail1">
