@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import ButtonGroup from "../components/ButtonGroup";
+import { useNavigate } from "react-router-dom";
 import Registerpic from "../images/register.jpg";
 import "./loginregister.css";
+import axios from "axios";
 
 export default function Register() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState();
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState("");
   const handleChange = (e) => {
@@ -32,18 +35,18 @@ export default function Register() {
       setError("Passwords do not match");
       return;
     }
-    setTimeout(() => {
-      if (formData.username === "existingUser") {
-        setError("Username already taken.");
-      } else {
-        localStorage.setItem(
-          formData.email,
-          JSON.stringify({ password: formData.password })
-        );
-        setSuccess(true);
-        console.log("Registration successful");
-      }
-    }, 500);
+    // setTimeout(() => {
+    //   if (formData.username === "existingUser") {
+    //     setError("Username already taken.");
+    //   } else {
+    //     localStorage.setItem(
+    //       formData.email,
+    //       JSON.stringify({ password: formData.password })
+    //     );
+    //     setSuccess(true);
+    //     console.log("Registration successful");
+    //   }
+    // }, 500);
     // try {
     //   const response = await fetch("/api/register", {
     //     method: "POST",
@@ -62,6 +65,36 @@ export default function Register() {
     // } catch (error) {
     //   setError("An error occurred. Please try again later.");
     // }
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/accounts/register/",
+        {
+          ...formData,
+          password2: formData.confirmPassword, // Make sure confirm password is sent as `password2`
+        }
+      );
+      console.log(response);
+      if (response.status === 201) {
+        setSuccess(true);
+        setMessage("Registration successful!");
+        // Optionally store the token
+        localStorage.setItem("token", response.data.user_data.token);
+
+        // Redirect to login page
+        setTimeout(() => {
+          navigate("/login"); // Redirect to login page after 2 seconds
+        }, 2000);
+      } else {
+        setError("registration failed");
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.response) {
+        setError(error.response.data.error || "An error occurred.");
+      } else {
+        setError("Network error, please try again.");
+      }
+    }
   };
   const handleCancel = () => {
     setFormData({
