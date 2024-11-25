@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import ButtonGroup from "../components/ButtonGroup";
 import Loginpic from "../images/login.jpg";
 import "./loginregister.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export default function Login() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const [error, setError] = useState();
@@ -17,7 +20,7 @@ export default function Login() {
     setError("");
     setSuccess(false);
   };
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     setError("");
     setSuccess(false);
@@ -26,15 +29,37 @@ export default function Login() {
       console.log("Please fill in all fields");
       return;
     }
-    const storedUser = JSON.parse(localStorage.getItem(formData.email));
-    if (storedUser && storedUser.password === formData.password) {
-      console.log("Login successful");
-      setSuccess(true);
-    } else {
-      setError("Invalid email or password");
-      console.log("Invalid email or password");
-      return;
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/accounts/login/",
+        {
+          username: formData.email,
+          password: formData.password,
+        }
+      );
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        setSuccess(true);
+        setTimeout(() => navigate("/"), 2000);
+      } else {
+        setError("Login failed");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setError("Invalid email or password");
+      } else {
+        setError("An error occurred. Please try again.");
+      }
     }
+    // const storedUser = JSON.parse(localStorage.getItem(formData.email));
+    // if (storedUser && storedUser.password === formData.password) {
+    //   console.log("Login successful");
+    //   setSuccess(true);
+    // } else {
+    //   setError("Invalid email or password");
+    //   console.log("Invalid email or password");
+    //   return;
+    // }
     // Add your login logic here
   };
   const handleCancel = () => {
