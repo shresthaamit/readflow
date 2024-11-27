@@ -10,22 +10,32 @@ export default function Card({ book }) {
     <>
       <div className="cards">
         <div className="card">
-          <img src={book.img} alt="Working" />
+          <img
+            src={
+              book.image
+                ? `http://localhost:8000${book.image}`
+                : "../images/Working.gif"
+            }
+            alt={book.title || "Book Cover"}
+          />
           <div className="carddetail">
             <div className="left-section">
               <img src={book.star} alt="ratestar" />
               <span>{book.rating}</span>
+              <span>{book.rating || "N/A"}</span>
               <span className="span">(6)</span>
             </div>
             <div className="right-section">
-              <span className="span">• {book.category}</span>
+              <span className="span">
+                • {book.category || "Unknown Category"}
+              </span>
             </div>
           </div>
           <div className="title-author-container">
             <p className="left-part">
-              <span className="spanbold">{book.bookTitle}</span>
+              <span className="spanbold">{book.title || "Untitled Book"}</span>
             </p>
-            <p className="right-part">By: {book.author}</p>
+            <p className="right-part">By: {book.author || "Unknown Author"}</p>
           </div>
           <div className="bookbuttons buttonss">
             <Link to={`/books/${book.id}`} className="buttons">

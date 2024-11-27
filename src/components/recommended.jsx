@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import Card from "./card";
 import "./card.css";
+import axios from "axios"; // Import Axios
+import { useNavigate } from "react-router-dom";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 const recommendedBooks = [
   {
@@ -55,6 +57,27 @@ const recommendedBooks = [
 ];
 
 export default function RecommendBooks() {
+  const [recommendedBooks, setRecommendedBooks] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchRecommendBooks = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/books/recommend/",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Add token for authentication
+            },
+          }
+        );
+        setRecommendedBooks(response.data);
+      } catch (error) {
+        console.error("Error fetching recommended books:", error);
+      }
+    };
+    fetchRecommendBooks();
+  }, []);
   return (
     <div className="head-container">
       <h1 className="head"> Top Recommendations for You</h1>
