@@ -14,8 +14,8 @@ import {
   FaUser,
   FaRegUser,
 } from "react-icons/fa";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 function Searchbar() {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -48,6 +48,23 @@ function Searchbar() {
 }
 
 function Navbar() {
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Check local storage for login status
+    const userLoggedIn = localStorage.getItem("userLoggedIn");
+    setLoggedIn(userLoggedIn === "true");
+  }, []);
+  const handleButtonClick = () => {
+    if (isLoggedIn) {
+      // Handle logout
+      setLoggedIn(false); // Update the state to logged out
+      alert("Logged out successfully!");
+    } else {
+      // Navigate to login page
+      navigate("/login");
+    }
+  };
   return (
     <div className="navbar">
       {" "}
@@ -58,14 +75,16 @@ function Navbar() {
         </div>
         <div className="navhead-right">
           <ul>
-            <li>
+            <li className="link1">
               <Link to="/">Home</Link>
             </li>
-            <li>
+            <li className="link1">
               <Link to="/books">Books</Link>
             </li>
             <li>
-              <Link to="#">Community</Link>
+              <button onClick={handleButtonClick}>
+                {isLoggedIn ? "Logout" : "Login"}
+              </button>
             </li>
           </ul>
           <div className="separator"></div>
