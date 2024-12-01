@@ -51,17 +51,22 @@ function Navbar() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    // Check local storage for login status
-    const userLoggedIn = localStorage.getItem("userLoggedIn");
-    setLoggedIn(userLoggedIn === "true");
+    const token = localStorage.getItem("token");
+    setLoggedIn(!!token); // Set to true if token exists, false otherwise
   }, []);
+  // useEffect(() => {
+  //   // Check local storage for login status
+  //   const userLoggedIn = localStorage.getItem("userLoggedIn");
+  //   setLoggedIn(userLoggedIn === "true");
+  // }, []);
   const handleButtonClick = () => {
     if (isLoggedIn) {
-      // Handle logout
-      setLoggedIn(false); // Update the state to logged out
-      alert("Logged out successfully!");
+      // Log out: Remove token and update state
+      localStorage.removeItem("token");
+      setLoggedIn(false);
+      navigate("/login"); // Redirect to login page after logout
     } else {
-      // Navigate to login page
+      // Redirect to login page if not logged in
       navigate("/login");
     }
   };
