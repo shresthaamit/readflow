@@ -1,7 +1,7 @@
 import React from "react";
 import "./navbar.css";
 import logo from "../images/logo.png";
-
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 import {
@@ -48,7 +48,7 @@ function Searchbar() {
 }
 
 function Navbar() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(!!localStorage.getItem("token"));    
   const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -59,12 +59,26 @@ function Navbar() {
   //   const userLoggedIn = localStorage.getItem("userLoggedIn");
   //   setLoggedIn(userLoggedIn === "true");
   // }, []);
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (isLoggedIn) {
-      // Log out: Remove token and update state
-      localStorage.removeItem("token");
-      setLoggedIn(false);
-      navigate("/login"); // Redirect to login page after logout
+      try {
+        await axios.post(
+          "http://127.0.0.1:8000/accounts/logout/",
+          {},
+          {
+            headers: {
+              Authorization: `Token ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        // Log out: Remove token and update state
+        localStorage.removeItem("token");
+        setLoggedIn(false);
+        navigate("/login"); // Redirect to login page after logout
+      } catch (error) {
+        console.error("Logout failed:", error);
+      }
     } else {
       // Redirect to login page if not logged in
       navigate("/login");
