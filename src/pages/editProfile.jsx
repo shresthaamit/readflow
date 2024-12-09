@@ -17,7 +17,7 @@ export default function EditProfile({ onBack, onProfileUpdated }) {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
       console.log("Token from localStorage:", token);
-
+      console.log(token);
       // if (!token) {
       //   setError("No token found. Please log in.");
       //   return;
