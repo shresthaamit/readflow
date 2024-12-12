@@ -1,51 +1,44 @@
 import React, { useState, useEffect } from "react";
 import "./profile.css";
 import axios from "axios";
+
 export default function EditProfile({ onBack, onProfileUpdated }) {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
-    profilepicture: null,
+    profilepicture: null, // This will hold the new image file if uploaded
   });
   const [originalData, setOriginalData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
-      console.log("Token from localStorage:", token);
-      console.log(token);
-      // if (!token) {
-      //   setError("No token found. Please log in.");
-      //   return;
-      // }
 
       try {
-        console.log("Sending request to fetch profile...");
         const response = await axios.get(
-          "http://127.0.0.1:8000/accounts/profile/",
+          "http://127.0.0.1:8000/accounts/update_profile/",
           {
             headers: {
               Authorization: `Token ${token}`,
             },
           }
         );
-        console.log("Profile data retrieved:", response.data);
+
         const userData = response.data;
         setFormData({ ...userData, password: "", confirmPassword: "" });
         setOriginalData(userData);
         setLoading(false);
       } catch (err) {
-        console.log("Error fetching profile:", err);
         if (err.response) {
-          console.log("Error response:", err.response);
           if (err.response.status === 401) {
             setError("Unauthorized. Please log in again.");
-            localStorage.removeItem("token"); // Remove the invalid token
-            window.location.href = "/login"; // Redirect to the login page
+            localStorage.removeItem("token");
+            window.location.href = "/login";
           } else {
             setError("Failed to load profile data.");
           }
@@ -58,6 +51,7 @@ export default function EditProfile({ onBack, onProfileUpdated }) {
 
     fetchProfile();
   }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -65,33 +59,40 @@ export default function EditProfile({ onBack, onProfileUpdated }) {
       [name]: value,
     }));
   };
+
   const handleFileChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
       profilepicture: e.target.files[0],
     }));
   };
+
   const handleCancel = () => {
     setFormData({ ...originalData, password: "", confirmPassword: "" });
     setSuccessMessage(""); // Clear any success message
     setError(""); // Clear any error message
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const data = new FormData();
-    if (formData.profilepicture) {
+    if (formData.profilepicture instanceof File) {
       data.append("profile_picture", formData.profilepicture);
     }
     Object.keys(formData).forEach((key) => {
-      if (formData[key] !== originalData[key] && formData[key] !== "") {
+      if (
+        key !== "profilepicture" &&
+        formData[key] !== originalData[key] &&
+        formData[key] !== ""
+      ) {
         data.append(key, formData[key]);
       }
     });
-    // console.log("Updating profile with:", formData);
+
     try {
       const response = await axios.patch(
-        "http://127.0.0.1:8000/accounts/profile/",
+        "http://127.0.0.1:8000/accounts/update_profile/",
         data,
         {
           headers: {
@@ -101,22 +102,31 @@ export default function EditProfile({ onBack, onProfileUpdated }) {
         }
       );
       setSuccessMessage("Profile updated successfully!");
-      setOriginalData(response.data); // Update original data
+      setOriginalData(response.data);
       setFormData({ ...response.data, password: "", confirmPassword: "" });
       if (onProfileUpdated) onProfileUpdated(response.data);
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        alert("Unauthorized. Please log in again.");
-        // localStorage.removeItem("authToken");
-        // window.location.href = "/login";
+        setError("Unauthorized. Please log in again.");
+        localStorage.removeItem("token");
+        window.location.href = "/login";
       } else {
         setError("Failed to update profile. Please try again later.");
       }
     }
   };
+
   if (loading) {
     return <p>Loading...</p>;
   }
+
+  // Dynamic image preview logic
+  const imageUrl = formData.profilepicture
+    ? URL.createObjectURL(formData.profilepicture) // Local image preview
+    : originalData.profile_picture
+    ? `http://127.0.0.1:8000${originalData.profile_picture}` // Display original profile picture if available
+    : "default_image_url.jpg"; // Fallback if no picture is set
+
   return (
     <form onSubmit={handleSubmit} className="edit-profile">
       <label>New Username</label>
@@ -159,11 +169,7 @@ export default function EditProfile({ onBack, onProfileUpdated }) {
         <div className="preview">
           <p>Preview:</p>
           <img
-            src={
-              typeof formData.profilepicture === "string"
-                ? formData.profilepicture
-                : URL.createObjectURL(formData.profilepicture)
-            }
+            src={imageUrl}
             alt="Profile Preview"
             style={{ width: "100px", height: "100px", objectFit: "cover" }}
           />

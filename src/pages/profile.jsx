@@ -44,6 +44,9 @@ export default function Profile() {
       setIsLoading(false);
     }
   }, []);
+  const imageUrl = userInfo?.profile_picture
+    ? `http://127.0.0.1:8000${userInfo.profile_picture}` // Use the profile picture URL from the backend
+    : "default_image_url.jpg";
   return (
     <>
       <div className="profilehead">
@@ -57,7 +60,7 @@ export default function Profile() {
       <div className="accounts">
         <div className="profiles">
           <div className="profileleft">
-            <img src={user} alt="Profile Pic" />
+            <img src={imageUrl} alt="Profile Pic" />
             {isLoading ? (
               <p>Loading...</p>
             ) : userInfo ? (
