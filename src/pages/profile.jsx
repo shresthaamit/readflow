@@ -45,7 +45,7 @@ export default function Profile() {
     }
   }, []);
   const imageUrl = userInfo?.profile_picture
-    ? `http://127.0.0.1:8000${userInfo.profile_picture}` // Use the profile picture URL from the backend
+    ? `http://127.0.0.1:8000${userInfo.profile_pics}` // Use the profile picture URL from the backend
     : "default_image_url.jpg";
   return (
     <>
