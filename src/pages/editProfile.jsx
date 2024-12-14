@@ -126,6 +126,7 @@ export default function EditProfile({ onBack, onProfileUpdated }) {
     : originalData.profile_picture
     ? `http://127.0.0.1:8000${originalData.profile_picture}` // Display original profile picture if available
     : "default_image_url.jpg"; // Fallback if no picture is set
+  console.log(imageUrl);
 
   return (
     <form onSubmit={handleSubmit} className="edit-profile">
