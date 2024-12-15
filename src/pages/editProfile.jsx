@@ -41,6 +41,7 @@ export default function EditProfile({ onBack, onProfileUpdated }) {
             window.location.href = "/login";
           } else {
             setError("Failed to load profile data.");
+            console.log("Profile error");
           }
         } else {
           setError("Failed to load profile data.");
