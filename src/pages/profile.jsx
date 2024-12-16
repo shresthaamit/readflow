@@ -10,6 +10,7 @@ export default function Profile() {
   const [activeSection, setActiveSection] = useState("history");
   const [activeTab, setActiveTab] = useState("downloads");
   const [userInfo, setUserInfo] = useState(null);
+  console.log(userInfo);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const totalBooks = books.length;
@@ -44,7 +45,7 @@ export default function Profile() {
       setIsLoading(false);
     }
   }, []);
-  const imageUrl = userInfo?.profile_picture
+  const imageUrl = userInfo?.profile_pics
     ? `http://127.0.0.1:8000${userInfo.profile_pics}` // Use the profile picture URL from the backend
     : "default_image_url.jpg";
   return (
