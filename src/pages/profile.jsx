@@ -11,6 +11,7 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState("downloads");
   const [userInfo, setUserInfo] = useState(null);
   console.log(userInfo);
+  console.log("error");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const totalBooks = books.length;
