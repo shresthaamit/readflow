@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import books from "./books.json";
@@ -9,9 +9,34 @@ import "./books.css";
 import RecommendBooks from "../components/recommended";
 // import QRCode from "qrcode.react";
 import placeholderQR from "../images/qr.png";
+import axios from "axios";
 export default function BookDetails() {
   const { id } = useParams();
-  const book = books.find((b) => b.id === parseInt(id));
+  const [book, setBook] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  // const book = books.find((b) => b.id === parseInt(id));
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/books/${id}/`) // Replace with your API endpoint
+      .then((response) => {
+        setBook(response.data); // Set the book data from API
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError("Failed to fetch book details. Please try again.");
+        setIsLoading(false);
+      });
+  }, [id]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   if (!book) {
     return <p>No Book found</p>;
   }
@@ -19,11 +44,11 @@ export default function BookDetails() {
     <div className="detailpage">
       {/* <h2>Book Details</h2> */}
       <div className="bookdetail">
-        <div className="bookimg">
-          <img src={book.img} alt={book.title} />
+        <div className="bookimgs">
+          <img src={`http://localhost:8000${book.image}`} alt={book.title} />
         </div>
         <div className="detail">
-          <h1>"{book.bookTitle}"</h1>
+          <h1>"{book.title}"</h1>
           <h3>{book.author}</h3>
           <h5>{book.rating}</h5>
           <p>{book.details}</p>
