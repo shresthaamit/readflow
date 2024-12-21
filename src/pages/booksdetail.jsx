@@ -22,6 +22,7 @@ export default function BookDetails() {
       .then((response) => {
         setBook(response.data); // Set the book data from API
         setIsLoading(false);
+        console.log(response);
       })
       .catch((error) => {
         setError("Failed to fetch book details. Please try again.");
