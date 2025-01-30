@@ -15,6 +15,12 @@ export default function BookDetails() {
   const [book, setBook] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState("");
+  const [rating, setRating] = useState("");
+  const [reviewError, setReviewError] = useState("");
+  const [reviewSuccess, setReviewSuccess] = useState("");
+
   // const book = books.find((b) => b.id === parseInt(id));
   useEffect(() => {
     axios
@@ -28,8 +34,54 @@ export default function BookDetails() {
         setError("Failed to fetch book details. Please try again.");
         setIsLoading(false);
       });
+    axios
+      .get(`http://127.0.0.1:8000/books/${id}/review-create/`)
+      .then((response) => {
+        setReviews(response.data);
+      })
+      .catch(() => {
+        setReviews([]);
+      });
   }, [id]);
+  const submitReview = () => {
+    const reviewData = {
+      rate: rating,
+      review: newReview, // Ensure this matches the backend field name
+    };
 
+    console.log("Submitting Review Data:", reviewData);
+    if (!rating || !newReview) {
+      setReviewError("Please enter both a review and a rating.");
+      return;
+    }
+
+    axios
+      .post(
+        `http://127.0.0.1:8000/books/${id}/review-create/`,
+        { rate: rating, text: newReview },
+        {
+          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+        }
+      )
+      .then((response) => {
+        // console.log("Review submitted:", response.data);
+        setReviews([...reviews, response.data]); // Append the new review
+        // console.log(response.data);
+        setNewReview("");
+        setRating("");
+        setReviewSuccess("Review added successfully!");
+        setReviewError("");
+      })
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          setReviewError(
+            error.response.data.detail || "Failed to submit review."
+          );
+        } else {
+          setReviewError("Failed to submit review.");
+        }
+      });
+  };
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -67,9 +119,18 @@ export default function BookDetails() {
           </div>
           <div className="ratesection">
             <div className="ratereview">
-              <textarea placeholder="Enter a review"></textarea>
+              <textarea
+                placeholder="Enter a review"
+                value={newReview}
+                onChange={(e) => setNewReview(e.target.value)}
+              />
               <div className="rating-submit">
-                <select name="rating" className="rating-dropdown">
+                <select
+                  name="rating"
+                  className="rating-dropdown"
+                  value={rating}
+                  onChange={(e) => setRating(e.target.value)}
+                >
                   <option value="">Rate</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -77,7 +138,11 @@ export default function BookDetails() {
                   <option value="4">4</option>
                   <option value="5">5</option>
                 </select>
-                <button type="button" className="action send-button">
+                <button
+                  type="button"
+                  className="action send-button"
+                  onClick={submitReview}
+                >
                   Send
                 </button>
                 <Link to="/books" className="action back-button">
