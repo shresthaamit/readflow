@@ -34,6 +34,7 @@ export default function BookDetails() {
         setError("Failed to fetch book details. Please try again.");
         setIsLoading(false);
       });
+
     axios
       .get(`http://127.0.0.1:8000/books/${id}/review-create/`)
       .then((response) => {
@@ -43,6 +44,7 @@ export default function BookDetails() {
         setReviews([]);
       });
   }, [id]);
+
   const submitReview = () => {
     const reviewData = {
       rate: rating,
