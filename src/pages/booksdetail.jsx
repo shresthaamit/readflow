@@ -1,78 +1,82 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-
-import books from "./books.json";
 import { LuDownload } from "react-icons/lu";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
-import reviews from "./reviews.json";
-import "./books.css";
 import RecommendBooks from "../components/recommended";
-// import QRCode from "qrcode.react";
 import placeholderQR from "../images/qr.png";
 import axios from "axios";
-export default function BookDetails() {
-  const { id } = useParams();
-  const [book, setBook] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState("");
-  const [rating, setRating] = useState("");
-  const [reviewError, setReviewError] = useState("");
-  const [reviewSuccess, setReviewSuccess] = useState("");
+import "./books.css";
 
-  // const book = books.find((b) => b.id === parseInt(id));
+export default function BookDetails() {
+  const { id } = useParams(); // Get book ID from URL params
+  const [book, setBook] = useState(null); // Book details state
+  const [isLoading, setIsLoading] = useState(true); // Loading state for API request
+  const [error, setError] = useState(null); // Error state for API request
+  const [reviews, setReviews] = useState({ results: [] }); // Reviews state
+  const [newReview, setNewReview] = useState(""); // New review text state
+  const [rating, setRating] = useState(""); // Rating state
+  const [reviewError, setReviewError] = useState(""); // Error state for review submission
+  const [reviewSuccess, setReviewSuccess] = useState(""); // Success state for review submission
+
+  // Fetch book details and reviews on component mount
   useEffect(() => {
+    // Fetch book details
     axios
-      .get(`http://127.0.0.1:8000/books/${id}/`) // Replace with your API endpoint
+      .get(`http://127.0.0.1:8000/books/${id}/`) // Fetch book details from API
       .then((response) => {
-        setBook(response.data); // Set the book data from API
+        setBook(response.data); // Set book data from API
         setIsLoading(false);
-        console.log(response);
       })
       .catch((error) => {
         setError("Failed to fetch book details. Please try again.");
         setIsLoading(false);
       });
 
+    // Fetch reviews for the book
     axios
-      .get(`http://127.0.0.1:8000/books/${id}/review-create/`)
+      .get(`http://127.0.0.1:8000/books/${id}/review/`, {
+        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      })
       .then((response) => {
+        console.log(response.data); // Log response data to inspect the format
         setReviews(response.data);
       })
-      .catch(() => {
-        setReviews([]);
+      .catch((error) => {
+        setReviews({ results: [] });
       });
-  }, [id]);
+  }, [id]); // Dependency on the book ID
 
+  // Review submission handler
   const submitReview = () => {
     const reviewData = {
-      rate: rating,
-      review: newReview, // Ensure this matches the backend field name
+      rate: Number(rating), // Ensure the rate is a number (1-5)
+      review: newReview, // The review text (change from 'text' to 'review')
     };
 
-    console.log("Submitting Review Data:", reviewData);
+    // Validation: Ensure both rating and review text are provided
     if (!rating || !newReview) {
-      setReviewError("Please enter both a review and a rating.");
+      setReviewError(
+        <p className="ml-7" color="red">
+          Enter both review and rating.
+        </p>
+      );
       return;
     }
 
+    // Send POST request to submit the review
     axios
-      .post(
-        `http://127.0.0.1:8000/books/${id}/review-create/`,
-        { rate: rating, text: newReview },
-        {
-          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-        }
-      )
+      .post(`http://127.0.0.1:8000/books/${id}/review-create/`, reviewData, {
+        headers: { Authorization: `Token ${localStorage.getItem("token")}` }, // Send auth token
+      })
       .then((response) => {
-        // console.log("Review submitted:", response.data);
-        setReviews([...reviews, response.data]); // Append the new review
-        // console.log(response.data);
+        // After submitting, add the new review to the list of reviews (no need to refresh)
+        setReviews((prevReviews) => [response.data, ...prevReviews]); // Add new review to the list
+
+        // Reset form fields after successful submission
         setNewReview("");
         setRating("");
         setReviewSuccess("Review added successfully!");
-        setReviewError("");
+        setReviewError(""); // Clear any previous error
       })
       .catch((error) => {
         if (error.response && error.response.data) {
@@ -84,6 +88,8 @@ export default function BookDetails() {
         }
       });
   };
+
+  // Loading state or error handling when data is still loading
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -95,9 +101,9 @@ export default function BookDetails() {
   if (!book) {
     return <p>No Book found</p>;
   }
+
   return (
     <div className="detailpage">
-      {/* <h2>Book Details</h2> */}
       <div className="bookdetail">
         <div className="bookimgs">
           <img src={`http://localhost:8000${book.image}`} alt={book.title} />
@@ -124,14 +130,14 @@ export default function BookDetails() {
               <textarea
                 placeholder="Enter a review"
                 value={newReview}
-                onChange={(e) => setNewReview(e.target.value)}
+                onChange={(e) => setNewReview(e.target.value)} // Update review state
               />
               <div className="rating-submit">
                 <select
                   name="rating"
                   className="rating-dropdown"
                   value={rating}
-                  onChange={(e) => setRating(e.target.value)}
+                  onChange={(e) => setRating(e.target.value)} // Update rating state
                 >
                   <option value="">Rate</option>
                   <option value="1">1</option>
@@ -143,7 +149,7 @@ export default function BookDetails() {
                 <button
                   type="button"
                   className="action send-button"
-                  onClick={submitReview}
+                  onClick={submitReview} // Handle review submission
                 >
                   Send
                 </button>
@@ -152,9 +158,9 @@ export default function BookDetails() {
                 </Link>
               </div>
             </div>
-            {/* <div className="qrsection"> */}
+            {/* Error message display */}
+            {reviewError && <p className="error-message">{reviewError}</p>}
             <div className="qr-section">
-              {/* <h4>QR Code</h4> */}
               <img
                 src={placeholderQR}
                 alt="QR Code Placeholder"
@@ -166,54 +172,41 @@ export default function BookDetails() {
                 }}
               />
             </div>
-            {/* </div> */}
           </div>
         </div>
       </div>
-      <RecommendBooks />
-      <div class="reviewdetailsection">
-        <AllReview reviews={reviews} />
-      </div>
-
-      {/* <p>Book ID: {id}</p> */}
-      {/* <p>Author: {book.author }</p> */}
-    </div>
-  );
-}
-
-function AllReview({ reviews }) {
-  const [showAll, setShowAll] = useState(false);
-  const reviewToShow = showAll ? reviews : reviews.slice(0, 3);
-
-  const toggleShowAll = () => {
-    setShowAll(!showAll);
-  };
-
-  return (
-    <div className="reviewdetailsection">
-      <h1>Review of other readers</h1>
-      {reviewToShow.map((review, index) => (
-        <div key={index} className="review">
-          <div className="userimg">
-            <img src={review.img} alt="User Image" />
-          </div>
-          <div className="userdetail">
-            <div className="namedate">
-              <h4>{review.username}</h4>
-              <span>2022-01-01</span>
+      <RecommendBooks /> {/* Recommended Books Component */}
+      <div className="reviewdetailsection">
+        <h2>Review of other readers</h2>
+        {reviews.results.length > 0 ? ( // Make sure you're accessing 'results' in the response
+          reviews.results.map((review, index) => (
+            <div key={index} className="review">
+              <div className="userimg">
+                <img
+                  src={
+                    review.profile_picture
+                      ? `http://localhost:8000${review.profile_picture}` // Ensure the full URL is constructed
+                      : "path_to_default_placeholder_image.jpg" // Use placeholder if no image
+                  }
+                  alt="User Image"
+                />
+              </div>
+              <div className="userdetail">
+                <div className="namedate">
+                  <h4>{review.rate_user}</h4>
+                  <span>
+                    {new Date(review.created_at).toLocaleDateString()}{" "}
+                    {/* Format date */}
+                  </span>
+                </div>
+                <h3>Rating: {review.rate}/5</h3>
+                <p>{review.review || "No review text provided."}</p>{" "}
+                {/* Handle null review text */}
+              </div>
             </div>
-            <h3>Rating: {review.rating}/5</h3>
-            <p>{review.text}</p>
-          </div>
-        </div>
-      ))}
-
-      {/* "See More" / "See Less" Button */}
-      <div className="button-container">
-        {reviews.length > 3 && (
-          <button onClick={toggleShowAll} className="toggle-button">
-            {showAll ? "See Less" : "See More"}
-          </button>
+          ))
+        ) : (
+          <p>No reviews yet.</p>
         )}
       </div>
     </div>
