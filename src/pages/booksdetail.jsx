@@ -4,6 +4,7 @@ import { LuDownload } from "react-icons/lu";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
 import RecommendBooks from "../components/recommended";
 import placeholderQR from "../images/qr.png";
+import defaults from "../images/default.png";
 import axios from "axios";
 import "./books.css";
 
@@ -17,6 +18,8 @@ export default function BookDetails() {
   const [rating, setRating] = useState(""); // Rating state
   const [reviewError, setReviewError] = useState(""); // Error state for review submission
   const [reviewSuccess, setReviewSuccess] = useState(""); // Success state for review submission
+  const [visibleReviews, setVisibleReviews] = useState(3); // Number of reviews to show initially
+  const [showMore, setShowMore] = useState(false); // Track whether to show more reviews or less
 
   // Fetch book details and reviews on component mount
   useEffect(() => {
@@ -38,13 +41,12 @@ export default function BookDetails() {
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       })
       .then((response) => {
-        console.log(response.data); // Log response data to inspect the format
         setReviews(response.data);
       })
       .catch((error) => {
         setReviews({ results: [] });
       });
-  }, [id]); // Dependency on the book ID
+  }, [id]);
 
   // Review submission handler
   const submitReview = () => {
@@ -89,6 +91,17 @@ export default function BookDetails() {
       });
   };
 
+  // Toggle between "Show More" and "Show Less" reviews
+  const toggleReviews = () => {
+    if (showMore) {
+      setVisibleReviews(3); // Reset to 3 reviews when showing less
+      setShowMore(false); // Set flag to false for "Show More"
+    } else {
+      setVisibleReviews(reviews.results.length); // Show all reviews
+      setShowMore(true); // Set flag to true for "Show Less"
+    }
+  };
+
   // Loading state or error handling when data is still loading
   if (isLoading) {
     return <p>Loading...</p>;
@@ -125,68 +138,20 @@ export default function BookDetails() {
               <span>{<BsFillBookmarkHeartFill />}</span>
             </button>
           </div>
-          <div className="ratesection">
-            <div className="ratereview">
-              <textarea
-                placeholder="Enter a review"
-                value={newReview}
-                onChange={(e) => setNewReview(e.target.value)} // Update review state
-              />
-              <div className="rating-submit">
-                <select
-                  name="rating"
-                  className="rating-dropdown"
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)} // Update rating state
-                >
-                  <option value="">Rate</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-                <button
-                  type="button"
-                  className="action send-button"
-                  onClick={submitReview} // Handle review submission
-                >
-                  Send
-                </button>
-                <Link to="/books" className="action back-button">
-                  Go to Books
-                </Link>
-              </div>
-            </div>
-            {/* Error message display */}
-            {reviewError && <p className="error-message">{reviewError}</p>}
-            <div className="qr-section">
-              <img
-                src={placeholderQR}
-                alt="QR Code Placeholder"
-                style={{
-                  maxWidth: "128px",
-                  width: "100%",
-                  padding: "16px",
-                  background: "white",
-                }}
-              />
-            </div>
-          </div>
         </div>
       </div>
-      <RecommendBooks /> {/* Recommended Books Component */}
+      <RecommendBooks />
       <div className="reviewdetailsection">
         <h2>Review of other readers</h2>
-        {reviews.results.length > 0 ? ( // Make sure you're accessing 'results' in the response
-          reviews.results.map((review, index) => (
+        {reviews.results.length > 0 ? (
+          reviews.results.slice(0, visibleReviews).map((review, index) => (
             <div key={index} className="review">
               <div className="userimg">
                 <img
                   src={
                     review.profile_picture
-                      ? `http://localhost:8000${review.profile_picture}` // Ensure the full URL is constructed
-                      : "path_to_default_placeholder_image.jpg" // Use placeholder if no image
+                      ? `http://localhost:8000${review.profile_picture}`
+                      : defaults // Use placeholder if no image
                   }
                   alt="User Image"
                 />
@@ -195,18 +160,25 @@ export default function BookDetails() {
                 <div className="namedate">
                   <h4>{review.rate_user}</h4>
                   <span>
-                    {new Date(review.created_at).toLocaleDateString()}{" "}
-                    {/* Format date */}
+                    {new Date(review.created_at).toLocaleDateString()}
                   </span>
                 </div>
                 <h3>Rating: {review.rate}/5</h3>
-                <p>{review.review || "No review text provided."}</p>{" "}
-                {/* Handle null review text */}
+                <p>{review.review || "No review text provided."}</p>
               </div>
             </div>
           ))
         ) : (
           <p>No reviews yet.</p>
+        )}
+        {/* Show more/less button */}
+        {reviews.results.length > 3 && (
+          <button
+            className={`show-more toggle-reviews-button`}
+            onClick={toggleReviews}
+          >
+            {showMore ? "Show Less" : "Show More"}
+          </button>
         )}
       </div>
     </div>

@@ -414,3 +414,24 @@ p {
   justify-content: flex-end;
   align-self: flex-end;
 }
+/* SHOWMORELESS_BUTTON */
+/* Style for the Show More/Show Less button */
+.toggle-reviews-button {
+  margin-top: 11px !important;
+  background-color: #09350b;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.toggle-reviews-button:hover {
+  background-color: #477249; /* Slightly darker green on hover */
+}
+
+.toggle-reviews-button:focus {
+  outline: none; /* Remove outline on focus */
+}

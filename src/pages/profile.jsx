@@ -6,6 +6,7 @@ import "./profile.css";
 import user from "../images/heroimg4.png";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import defaults from "../images/default.png";
 export default function Profile() {
   const [activeSection, setActiveSection] = useState("history");
   const [activeTab, setActiveTab] = useState("downloads");
@@ -48,7 +49,7 @@ export default function Profile() {
   }, []);
   const imageUrl = userInfo?.profile_picture
     ? `http://127.0.0.1:8000${userInfo.profile_picture}` // Construct the full URL
-    : "default_image_url.jpg";
+    : defaults;
 
   return (
     <>
