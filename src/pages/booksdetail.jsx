@@ -7,19 +7,38 @@ import placeholderQR from "../images/qr.png";
 import defaults from "../images/default.png";
 import axios from "axios";
 import "./books.css";
+import EditDelete from "../components/editdelete";
 
 export default function BookDetails() {
-  const { id } = useParams(); // Get book ID from URL params
-  const [book, setBook] = useState(null); // Book details state
-  const [isLoading, setIsLoading] = useState(true); // Loading state for API request
-  const [error, setError] = useState(null); // Error state for API request
-  const [reviews, setReviews] = useState({ results: [] }); // Reviews state
-  const [newReview, setNewReview] = useState(""); // New review text state
-  const [rating, setRating] = useState(""); // Rating state
-  const [reviewError, setReviewError] = useState(""); // Error state for review submission
-  const [reviewSuccess, setReviewSuccess] = useState(""); // Success state for review submission
-  const [visibleReviews, setVisibleReviews] = useState(3); // Number of reviews to show initially
+  const { id } = useParams();
+  const [book, setBook] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [reviews, setReviews] = useState({ results: [] });
+  const [newReview, setNewReview] = useState("");
+  const [rating, setRating] = useState("");
+  const [reviewError, setReviewError] = useState("");
+  const [reviewSuccess, setReviewSuccess] = useState("");
+  const [visibleReviews, setVisibleReviews] = useState(3);
   const [showMore, setShowMore] = useState(false); // Track whether to show more reviews or less
+  const [loggedInUsername, setLoggedInUsername] = useState(null); // Store logged-in user's username
+
+  // Fetch the logged-in user's username
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .get("http://127.0.0.1:8000/accounts/checkstatus/", {
+          headers: { Authorization: `Token ${token}` },
+        })
+        .then((response) => {
+          setLoggedInUsername(response.data.detail.username); // Store the logged-in user's username
+        })
+        .catch((error) => {
+          setLoggedInUsername(null); // Handle case where the user is not logged in
+        });
+    }
+  }, []);
 
   // Fetch book details and reviews on component mount
   useEffect(() => {
@@ -41,53 +60,63 @@ export default function BookDetails() {
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       })
       .then((response) => {
-        setReviews(response.data);
+        const sortedReviews = response.data.results.sort((a, b) => {
+          if (a.rate_user === loggedInUsername) return -1;
+          if (b.rate_user === loggedInUsername) return 1;
+          return 0;
+        });
+        setReviews({ results: sortedReviews });
+
+        // Check if the user has already reviewed the book
+        const userReviewed = response.data.results.some(
+          (review) => review.rate_user === loggedInUsername
+        );
+        if (userReviewed) {
+          setReviewError("You have already reviewed this book.");
+        }
       })
       .catch((error) => {
         setReviews({ results: [] });
       });
-  }, [id]);
+  }, [id, loggedInUsername]);
 
   // Review submission handler
   const submitReview = () => {
-    const reviewData = {
-      rate: Number(rating), // Ensure the rate is a number (1-5)
-      review: newReview, // The review text (change from 'text' to 'review')
-    };
-
-    // Validation: Ensure both rating and review text are provided
-    if (!rating || !newReview) {
-      setReviewError(
-        <p className="ml-7" color="red">
-          Enter both review and rating.
-        </p>
-      );
+    // If the user has already reviewed the book, do not allow submitting a new review
+    if (reviewError) {
+      setReviewError("You have already reviewed this book.");
       return;
     }
 
-    // Send POST request to submit the review
+    const reviewData = {
+      rate: Number(rating),
+      review: newReview,
+    };
+
+    if (!rating || !newReview) {
+      setReviewError("Enter both review and rating.");
+      return;
+    }
+
     axios
       .post(`http://127.0.0.1:8000/books/${id}/review-create/`, reviewData, {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` }, // Send auth token
+        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       })
       .then((response) => {
-        // After submitting, add the new review to the list of reviews (no need to refresh)
-        setReviews((prevReviews) => [response.data, ...prevReviews]); // Add new review to the list
-
-        // Reset form fields after successful submission
+        const updatedReviews = [response.data, ...reviews.results];
+        const sortedReviews = updatedReviews.sort((a, b) => {
+          if (a.rate_user === loggedInUsername) return -1;
+          if (b.rate_user === loggedInUsername) return 1;
+          return 0;
+        });
+        setReviews({ results: sortedReviews });
         setNewReview("");
         setRating("");
         setReviewSuccess("Review added successfully!");
-        setReviewError(""); // Clear any previous error
+        setReviewError(""); // Clear error if submission is successful
       })
       .catch((error) => {
-        if (error.response && error.response.data) {
-          setReviewError(
-            error.response.data.detail || "Failed to submit review."
-          );
-        } else {
-          setReviewError("Failed to submit review.");
-        }
+        setReviewError("Failed to submit review.");
       });
   };
 
@@ -138,8 +167,61 @@ export default function BookDetails() {
               <span>{<BsFillBookmarkHeartFill />}</span>
             </button>
           </div>
+
+          <div className="ratesection">
+            <div className="ratereview">
+              <textarea
+                placeholder="Enter a review"
+                value={newReview}
+                onChange={(e) => setNewReview(e.target.value)}
+              />
+              <div className="rating-submit">
+                <select
+                  name="rating"
+                  className="rating-dropdown"
+                  value={rating}
+                  onChange={(e) => setRating(e.target.value)}
+                >
+                  <option value="">Rate</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <button
+                  type="button"
+                  className="action send-button"
+                  onClick={submitReview}
+                >
+                  Send
+                </button>
+                <Link to="/books" className="action back-button">
+                  Go to Books
+                </Link>
+              </div>
+              {reviewError && <p className="error-message">{reviewError}</p>}
+              {reviewSuccess && (
+                <p className="success-message">{reviewSuccess}</p>
+              )}
+            </div>
+
+            <div className="qr-section">
+              <img
+                src={book.qr_code_url || placeholderQR}
+                alt="QR Code"
+                style={{
+                  maxWidth: "128px",
+                  width: "100%",
+                  padding: "16px",
+                  background: "white",
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
+
       <RecommendBooks />
       <div className="reviewdetailsection">
         <h2>Review of other readers</h2>
@@ -165,6 +247,14 @@ export default function BookDetails() {
                 </div>
                 <h3>Rating: {review.rate}/5</h3>
                 <p>{review.review || "No review text provided."}</p>
+
+                {/* Show Edit and Delete buttons only for the logged-in user */}
+                {loggedInUsername === review.rate_user && (
+                  <EditDelete
+                    onEdit={() => handleEdit(review.id)} // Pass the review ID for editing
+                    onDelete={() => handleDelete(review.id)} // Pass the review ID for deletion
+                  />
+                )}
               </div>
             </div>
           ))
