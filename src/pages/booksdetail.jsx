@@ -22,7 +22,7 @@ export default function BookDetails() {
   const [visibleReviews, setVisibleReviews] = useState(3);
   const [showMore, setShowMore] = useState(false); // Track whether to show more reviews or less
   const [loggedInUsername, setLoggedInUsername] = useState(null); // Store logged-in user's username
-
+  const [editingReview, setEditingReview] = useState(null);
   // Fetch the logged-in user's username
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,7 +32,8 @@ export default function BookDetails() {
           headers: { Authorization: `Token ${token}` },
         })
         .then((response) => {
-          setLoggedInUsername(response.data.detail.username); // Store the logged-in user's username
+          setLoggedInUsername(response.data.detail.username);
+          console.log(response.data.detail.username); // Store the logged-in user's username
         })
         .catch((error) => {
           setLoggedInUsername(null); // Handle case where the user is not logged in
@@ -81,46 +82,90 @@ export default function BookDetails() {
   }, [id, loggedInUsername]);
 
   // Review submission handler
-  const submitReview = () => {
+  const submitReview = (e) => {
     // If the user has already reviewed the book, do not allow submitting a new review
-    if (reviewError) {
-      setReviewError("You have already reviewed this book.");
-      return;
-    }
+    // if (reviewError) {
+    //   setReviewError("You have already reviewed this book.");
+    //   return;
+    // }
+    if (editingReview) {
+      // Edit existing review
+      const reviewData = {
+        rate: Number(rating),
+        review: newReview,
+      };
 
-    const reviewData = {
-      rate: Number(rating),
-      review: newReview,
-    };
-
-    if (!rating || !newReview) {
-      setReviewError("Enter both review and rating.");
-      return;
-    }
-
-    axios
-      .post(`http://127.0.0.1:8000/books/${id}/review-create/`, reviewData, {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-      })
-      .then((response) => {
-        const updatedReviews = [response.data, ...reviews.results];
-        const sortedReviews = updatedReviews.sort((a, b) => {
-          if (a.rate_user === loggedInUsername) return -1;
-          if (b.rate_user === loggedInUsername) return 1;
-          return 0;
+      axios
+        .put(
+          `http://127.0.0.1:8000/books/review/${editingReview}/`,
+          reviewData,
+          {
+            headers: {
+              Authorization: `Token ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          const updatedReviews = reviews.results.map((review) =>
+            review.id === editingReview ? response.data : review
+          );
+          setReviews({ results: updatedReviews });
+          setEditingReview(null); // Reset editing state
+          setNewReview("");
+          setRating("");
+          setReviewSuccess("Review updated successfully!");
+        })
+        .catch((error) => {
+          setReviewError("Failed to update review.");
         });
-        setReviews({ results: sortedReviews });
-        setNewReview("");
-        setRating("");
-        setReviewSuccess("Review added successfully!");
-        setReviewError(""); // Clear error if submission is successful
-      })
-      .catch((error) => {
-        setReviewError("Failed to submit review.");
-      });
+    } else {
+      const reviewData = {
+        rate: Number(rating),
+        review: newReview,
+      };
+
+      if (!rating || !newReview) {
+        setReviewError("Enter both review and rating.");
+        return;
+      }
+
+      axios
+        .post(`http://127.0.0.1:8000/books/${id}/review-create/`, reviewData, {
+          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+        })
+        .then((response) => {
+          const updatedReviews = [response.data, ...reviews.results];
+          const sortedReviews = updatedReviews.sort((a, b) => {
+            if (a.rate_user === loggedInUsername) return -1;
+            if (b.rate_user === loggedInUsername) return 1;
+            return 0;
+          });
+          setReviews({ results: sortedReviews });
+          setNewReview("");
+          setRating("");
+          setReviewSuccess("Review added successfully!");
+          setReviewError(""); // Clear error if submission is successful
+        })
+        .catch((error) => {
+          setReviewError("Failed to submit review.");
+        });
+    }
   };
 
   // Toggle between "Show More" and "Show Less" reviews
+
+  const handleEdit = (reviewId) => {
+    const review = reviews.results.find((review) => review.id === reviewId);
+    setEditingReview(reviewId);
+    setNewReview(review.review);
+    setRating(String(review.rate));
+  };
+
+  // Handle delete review
+  const handleDelete = (reviewId) => {
+    // Implement delete logic (optional for now)
+  };
   const toggleReviews = () => {
     if (showMore) {
       setVisibleReviews(3); // Reset to 3 reviews when showing less
@@ -130,7 +175,6 @@ export default function BookDetails() {
       setShowMore(true); // Set flag to true for "Show Less"
     }
   };
-
   // Loading state or error handling when data is still loading
   if (isLoading) {
     return <p>Loading...</p>;
