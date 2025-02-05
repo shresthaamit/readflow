@@ -181,8 +181,37 @@ export default function BookDetails() {
 
   // Handle delete review
   const handleDelete = (reviewId) => {
-    // Implement delete logic (optional for now)
+    // Show confirmation before deleting (optional)
+    if (window.confirm("Are you sure you want to delete your review?")) {
+      // Send DELETE request to the API to delete the review
+      axios
+        .delete(`http://127.0.0.1:8000/books/review/${reviewId}/`, {
+          headers: {
+            Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          // Successfully deleted review
+          setReviews({
+            results: reviews.results.filter((review) => review.id !== reviewId),
+          });
+
+          // Reset the "You have already reviewed this book." message
+          setReviewError(""); // Clear the error message after successful deletion
+          setReviewSuccess("Review deleted successfully!");
+
+          // Optionally, hide the success message after a few seconds
+          setTimeout(() => {
+            setReviewSuccess(""); // Clear success message after 4 seconds
+          }, 4000);
+        })
+        .catch((error) => {
+          // Handle error if the deletion fails
+          setReviewError("Failed to delete review. Please try again.");
+        });
+    }
   };
+
   const toggleReviews = () => {
     if (showMore) {
       setVisibleReviews(3); // Reset to 3 reviews when showing less
