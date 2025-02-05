@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { LuDownload } from "react-icons/lu";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
@@ -23,6 +23,9 @@ export default function BookDetails() {
   const [showMore, setShowMore] = useState(false); // Track whether to show more reviews or less
   const [loggedInUsername, setLoggedInUsername] = useState(null); // Store logged-in user's username
   const [editingReview, setEditingReview] = useState(null);
+  const reviewFormRef = useRef(null); // Create a ref for the review form
+  const textareaRef = useRef(null);
+  const [highlight, setHighlight] = useState(false);
   // Fetch the logged-in user's username
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -43,7 +46,8 @@ export default function BookDetails() {
 
   // Fetch book details and reviews on component mount
   useEffect(() => {
-    // Fetch book details
+    // Fetch book detai
+    // ls
     axios
       .get(`http://127.0.0.1:8000/books/${id}/`) // Fetch book details from API
       .then((response) => {
@@ -114,7 +118,12 @@ export default function BookDetails() {
           setEditingReview(null); // Reset editing state
           setNewReview("");
           setRating("");
+
           setReviewSuccess("Review updated successfully!");
+
+          setTimeout(() => {
+            setReviewSuccess(""); // Clear the success message after 4 seconds
+          }, 2000);
         })
         .catch((error) => {
           setReviewError("Failed to update review.");
@@ -160,6 +169,14 @@ export default function BookDetails() {
     setEditingReview(reviewId);
     setNewReview(review.review);
     setRating(String(review.rate));
+    if (reviewFormRef.current) {
+      reviewFormRef.current.scrollIntoView({ behavior: "smooth" });
+      setHighlight(true); // Set highlight to true
+      setTimeout(() => setHighlight(false), 2000); // Remove highlight after 2 seconds
+    }
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
   };
 
   // Handle delete review
@@ -213,11 +230,14 @@ export default function BookDetails() {
           </div>
 
           <div className="ratesection">
-            <div className="ratereview">
+            <div className="ratereview" ref={reviewFormRef}>
               <textarea
+                ref={textareaRef}
+                className={highlight ? "highlight" : ""}
                 placeholder="Enter a review"
                 value={newReview}
                 onChange={(e) => setNewReview(e.target.value)}
+                autoFocus
               />
               <div className="rating-submit">
                 <select

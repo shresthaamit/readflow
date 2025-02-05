@@ -435,3 +435,7 @@ p {
 .toggle-reviews-button:focus {
   outline: none; /* Remove outline on focus */
 }
+.highlight {
+  border: 7px solid #558436;
+  background-color: #f6f7f8;
+}
