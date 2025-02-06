@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { LuDownload } from "react-icons/lu";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
 import RecommendBooks from "../components/recommended";
-import placeholderQR from "../images/qr.png";
+import placeholderQR from "../images/Defaultqr.png";
 import defaults from "../images/default.png";
 import axios from "axios";
 import "./books.css";
@@ -161,7 +161,7 @@ export default function BookDetails() {
         });
     }
   };
-
+  axios.get();
   // Toggle between "Show More" and "Show Less" reviews
 
   const handleEdit = (reviewId) => {
@@ -300,16 +300,29 @@ export default function BookDetails() {
             </div>
 
             <div className="qr-section">
-              <img
-                src={book.qr_code_url || placeholderQR}
-                alt="QR Code"
-                style={{
-                  maxWidth: "128px",
-                  width: "100%",
-                  padding: "16px",
-                  background: "white",
-                }}
-              />
+              {book.qr_code ? (
+                <img
+                  src={`http://127.0.0.1:8000${book.qr_code}`} // This assumes book.qr_code contains a relative URL.
+                  alt="QR Code"
+                  style={{
+                    maxWidth: "128px",
+                    width: "100%",
+                    padding: "16px",
+                    background: "white",
+                  }}
+                />
+              ) : (
+                <img
+                  src={placeholderQR} // Use a placeholder image if the QR code is not provided.
+                  alt="QR Code Placeholder"
+                  style={{
+                    maxWidth: "128px",
+                    width: "100%",
+                    padding: "16px",
+                    background: "white",
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>
