@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 import "./books.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import books from "./books.json";
 import { useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
@@ -13,27 +13,21 @@ function Books() {
   const [selectcategory, setSelectedCategory] = useState(null);
   const [selectauthor, setSelectedAuthor] = useState(null);
   const [books, setBooks] = useState(null);
-  // const filteredbooks = selectcategory
-  //   ? books.filter((book) => book.category === selectcategory)
-  //   : books;
-
-  // const authorbooks = selectauthor
-  //   ? books.filter((book) => book.author === selectauthor)
-  //   : books;
-
+  const location = useLocation();
+  const navigate = useNavigate(); // For updating URL without reloading the page
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get("search");
   const categories = [...new Set(books?.map((book) => book.category))];
   const authors = [...new Set(books?.map((book) => book.author))];
 
   const filteredbooks = books?.filter((book) => {
+    if (searchQuery) {
+      return book.title.toLowerCase().includes(searchQuery.toLowerCase()); // Filter by title
+    }
     if (selectcategory || selectauthor) {
       return book.category === selectcategory || book.author === selectauthor;
-    } else if (selectcategory) {
-      return book.category === selectcategory;
-    } else if (selectauthor) {
-      return book.author === selectauthor;
-    } else {
-      return true;
     }
+    return true;
   });
 
   useEffect(() => {
@@ -48,10 +42,18 @@ function Books() {
 
   const handleclick = (category) => {
     setSelectedCategory(category === selectcategory ? null : category);
+    if (category === null && selectauthor === null) {
+      // Reset the search query when "All" is clicked
+      navigate("/books"); // This will remove the search query from the URL
+    }
   };
 
   const handleAuthorbuttons = (author) => {
     setSelectedAuthor(author === selectauthor ? null : author);
+    if (author === null && selectcategory === null) {
+      // Reset the search query when "All" is clicked
+      navigate("/books"); // This will remove the search query from the URL
+    }
   };
   return (
     <>
@@ -65,6 +67,7 @@ function Books() {
                 onClick={() => {
                   setSelectedCategory(null);
                   setSelectedAuthor(null);
+                  navigate("/books");
                 }}
                 className="category-button"
               >
@@ -88,6 +91,7 @@ function Books() {
                 onClick={() => {
                   setSelectedCategory(null);
                   setSelectedAuthor(null);
+                  navigate("/books");
                 }}
                 className="author-button"
               >

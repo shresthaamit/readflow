@@ -18,12 +18,17 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 function Searchbar() {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const handelInputChange = (event) => {
     setSearchQuery(event.target.value);
   };
   const handleSearch = () => {
     console.log("Searching for:", searchQuery);
+    // Navigate to the books page with search query as URL parameter
+    if (searchQuery) {
+      navigate(`/books?search=${searchQuery}`);
+    }
     setSearchQuery("");
   };
 
@@ -33,7 +38,7 @@ function Searchbar() {
         type="text"
         value={searchQuery}
         onChange={handelInputChange}
-        placeholder="Enter search query"
+        placeholder="Enter Book Title"
         onKeyDown={(event) => {
           if (event.key === "Enter") {
             handleSearch(); // Trigger search on pressing Enter
@@ -48,7 +53,7 @@ function Searchbar() {
 }
 
 function Navbar() {
-  const [isLoggedIn, setLoggedIn] = useState(!!localStorage.getItem("token"));    
+  const [isLoggedIn, setLoggedIn] = useState(!!localStorage.getItem("token"));
   const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");

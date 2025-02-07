@@ -300,29 +300,20 @@ export default function BookDetails() {
             </div>
 
             <div className="qr-section">
-              {book.qr_code ? (
-                <img
-                  src={`http://127.0.0.1:8000${book.qr_code}`} // This assumes book.qr_code contains a relative URL.
-                  alt="QR Code"
-                  style={{
-                    maxWidth: "128px",
-                    width: "100%",
-                    padding: "16px",
-                    background: "white",
-                  }}
-                />
-              ) : (
-                <img
-                  src={placeholderQR} // Use a placeholder image if the QR code is not provided.
-                  alt="QR Code Placeholder"
-                  style={{
-                    maxWidth: "128px",
-                    width: "100%",
-                    padding: "16px",
-                    background: "white",
-                  }}
-                />
-              )}
+              <img
+                src={
+                  book.qr_code
+                    ? `http://127.0.0.1:8000${book.qr_code}`
+                    : placeholderQR
+                }
+                alt="QR Code"
+                style={{
+                  maxWidth: "128px",
+                  width: "100%",
+                  padding: "16px",
+                  background: "white",
+                }}
+              />
             </div>
           </div>
         </div>
