@@ -8,6 +8,7 @@ import defaults from "../images/default.png";
 import axios from "axios";
 import "./books.css";
 import EditDelete from "../components/editdelete";
+import AddToFavorites from "../components/AddToFav";
 
 export default function BookDetails() {
   const { id } = useParams();
@@ -256,6 +257,7 @@ export default function BookDetails() {
               Add to favourite
               <span>{<BsFillBookmarkHeartFill />}</span>
             </button>
+            <AddToFavorites bookId={id} />
           </div>
 
           <div className="ratesection">
