@@ -253,11 +253,20 @@ export default function BookDetails() {
                 <LuDownload />
               </span>
             </button>
-            <button className="buttons style">
+            {/* <button className="buttons style">
               Add to favourite
               <span>{<BsFillBookmarkHeartFill />}</span>
-            </button>
-            <AddToFavorites bookId={id} />
+            </button> */}
+            <div
+              style={{
+                padding: "20px",
+                backgroundColor: "#black",
+                borderRadius: "8px",
+              }}
+            >
+              <AddToFavorites bookId={id} />
+            </div>
+         
           </div>
 
           <div className="ratesection">

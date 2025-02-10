@@ -439,3 +439,13 @@ p {
   border: 7px solid #558436;
   background-color: #f6f7f8;
 }
+.error {
+  display: block;
+  margin-top: 80px; /* Adjust if needed for spacing */
+}
+
+.error p {
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+}

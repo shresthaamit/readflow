@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
-
+import "../pages/books.css";
 const AddToFavorites = ({ bookId }) => {
   const [favoriteCount, setFavoriteCount] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -10,7 +10,7 @@ const AddToFavorites = ({ bookId }) => {
   const errorStyle = {
     color: "red",
     fontSize: "14px",
-    marginTop: "10px",
+    marginTop: "10px", // Adjust this as necessary for spacing
     fontWeight: "bold",
   };
 
@@ -49,7 +49,7 @@ const AddToFavorites = ({ bookId }) => {
   return (
     <div>
       <button
-        className="errorStyle"
+        className="buttons style errorStyle"
         onClick={handleAddFavorite}
         disabled={isAdding || isFavorite}
       >
@@ -63,7 +63,8 @@ const AddToFavorites = ({ bookId }) => {
           </span>
         )}
       </button>
-      {error && <p className="error-message">{error}</p>}
+      {error && <p style={errorStyle}>{error}</p>}
+      
     </div>
   );
 };
