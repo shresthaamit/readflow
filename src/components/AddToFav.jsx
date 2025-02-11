@@ -7,10 +7,11 @@ const AddToFavorites = ({ bookId }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [error, setError] = useState("");
+  const [alreadyFavorited, setAlreadyFavorited] = useState(false);
   const errorStyle = {
     color: "red",
     fontSize: "14px",
-    marginTop: "10px", // Adjust this as necessary for spacing
+    marginTop: "40px", // Adjust this as necessary for spacing
     fontWeight: "bold",
   };
 
@@ -47,25 +48,35 @@ const AddToFavorites = ({ bookId }) => {
       });
   };
   return (
-    <div>
-      <button
-        className="buttons style errorStyle"
-        onClick={handleAddFavorite}
-        disabled={isAdding || isFavorite}
-      >
-        {isFavorite ? (
-          <span>Added to Favorites</span>
-        ) : isAdding ? (
-          <span>Adding...</span>
-        ) : (
-          <span>
-            Add to favorite <BsFillBookmarkHeartFill />
-          </span>
-        )}
-      </button>
-      {error && <p style={errorStyle}>{error}</p>}
-      
-    </div>
+    <>
+      <div>
+        <button
+          className="buttons style errorStyle"
+          onClick={handleAddFavorite}
+          disabled={isAdding || isFavorite}
+        >
+          {isFavorite ? (
+            <span>Added to Favorites</span>
+          ) : isAdding ? (
+            <span>Adding...</span>
+          ) : (
+            <span>
+              Add to favorite <BsFillBookmarkHeartFill />
+            </span>
+          )}
+        </button>
+        <div>
+          {alreadyFavorited && !isFavorite && (
+            <div className="already-favorited-message-container">
+              <p className="already-favorited-message">
+                This book is already in your favorites!
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+      <p> {error && <p style={errorStyle}>{error}</p>}</p>
+    </>
   );
 };
 export default AddToFavorites;

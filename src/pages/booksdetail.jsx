@@ -266,7 +266,9 @@ export default function BookDetails() {
             >
               <AddToFavorites bookId={id} />
             </div>
-         
+            <div>
+              <p>The book is already in favourite.</p>
+            </div>
           </div>
 
           <div className="ratesection">
