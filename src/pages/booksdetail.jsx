@@ -8,7 +8,7 @@ import defaults from "../images/default.png";
 import axios from "axios";
 import "./books.css";
 import EditDelete from "../components/editdelete";
-import AddToFavorites from "../components/AddToFav";
+import AddToFavorites from "../components/AddToFavou";
 
 export default function BookDetails() {
   const { id } = useParams();
@@ -27,6 +27,7 @@ export default function BookDetails() {
   const reviewFormRef = useRef(null); // Create a ref for the review form
   const textareaRef = useRef(null);
   const [highlight, setHighlight] = useState(false);
+  const [alreadyFavorited, setAlreadyFavorited] = useState(false);
   // Fetch the logged-in user's username
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -222,6 +223,10 @@ export default function BookDetails() {
       setShowMore(true); // Set flag to true for "Show Less"
     }
   };
+  const handleAlreadyFavorited = (status) => {
+    setAlreadyFavorited(status);
+  };
+
   // Loading state or error handling when data is still loading
   if (isLoading) {
     console.log("Loading");
@@ -254,22 +259,17 @@ export default function BookDetails() {
                 <LuDownload />
               </span>
             </button>
-            {/* <button className="buttons style">
-              Add to favourite
-              <span>{<BsFillBookmarkHeartFill />}</span>
-            </button> */}
-            <div
-              style={{
-                padding: "20px",
-                backgroundColor: "#black",
-                borderRadius: "8px",
-              }}
-            >
-              <AddToFavorites bookId={id} />
-            </div>
             <div>
-              <p>The book is already in favourite.</p>
+              <AddToFavorites
+                bookId={id}
+                onAlreadyFavorited={handleAlreadyFavorited}
+              />
             </div>
+            {alreadyFavorited && !book.isFavorite && (
+              <p className="already-favorited-message">
+                This book is already in your favorites!
+              </p>
+            )}
           </div>
 
           <div className="ratesection">

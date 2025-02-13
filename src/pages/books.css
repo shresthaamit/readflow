@@ -228,6 +228,9 @@ book:hover {
 }
 .bookbuttons .buttons span {
   margin-left: 4px;
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
 }
 .bookbuttons .style {
   margin-left: 40px;
@@ -253,6 +256,7 @@ book:hover {
   width: 27%;
   height: 300px;
 }
+
 .bookimgs img {
   max-width: 200px;
   max-height: 300px;
@@ -444,7 +448,7 @@ p {
   margin-top: 80px; /* Adjust if needed for spacing */
 }
 
-.error p {
+.already-favorited-message {
   color: red;
   font-size: 14px;
   font-weight: bold;

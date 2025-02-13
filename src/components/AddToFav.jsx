@@ -75,7 +75,6 @@ const AddToFavorites = ({ bookId }) => {
           )}
         </div>
       </div>
-      <p> {error && <p style={errorStyle}>{error}</p>}</p>
     </>
   );
 };
