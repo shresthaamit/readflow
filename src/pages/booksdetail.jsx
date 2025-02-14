@@ -252,7 +252,7 @@ export default function BookDetails() {
           <h3>{book.author}</h3>
           <h5>{book.rating}</h5>
           <p>{book.details}</p>
-          <div className="bookbuttons">
+          <div className="bookbuttoons">
             <button className="buttons ">
               Download
               <span>

@@ -5,6 +5,7 @@ import "./books.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import books from "./books.json";
 import { useState } from "react";
+import { LuDownload } from "react-icons/lu";
 import { SlArrowRight } from "react-icons/sl";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
 
@@ -141,9 +142,9 @@ function Books() {
                   </span>
                 </Link>
                 <Link to="button" className="buttons">
-                  Add to favourite
+                  Download
                   <span>
-                    <BsFillBookmarkHeartFill />
+                    <LuDownload />
                   </span>
                 </Link>
               </div>

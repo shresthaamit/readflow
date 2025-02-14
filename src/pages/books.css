@@ -206,15 +206,15 @@ book:hover {
   background-color: #98bb19;
 }
 .bookbuttons {
-  /* display: flex; */
-  /* justify-content: space-between; */
+  display: flex;
+  justify-content: space-between;
   margin: 12px 4px 0 4px;
   align-items: center;
 }
 
 .bookbuttons .buttons {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex; */
+  /* justify-content: space-between; */
   padding: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   border-radius: 4px;
@@ -241,6 +241,25 @@ book:hover {
   width: 95%;
   margin: 20px auto;
   /* height: 100vh; */
+}
+.bookbuttoons {
+  display: flex;
+  justify-content: flex-start;
+  margin: 12px 4px 0 4px;
+  align-items: center;
+}
+.bookbuttoons .buttons {
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  font-size: 15px;
+  margin: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  color: black !important;
 }
 .bookdetail {
   display: flex;
