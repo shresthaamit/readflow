@@ -82,7 +82,7 @@
 }
 
 .profileleft button {
-  background-color: #189416;
+  /* background-color: #189416; */
   color: #fff;
   padding: 0.6rem 1.2rem;
   border: none;
@@ -223,4 +223,34 @@
   .edit-profile button {
     font-size: 0.9rem;
   }
+}
+.profilehistory .profilenav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profilehistory .profilenav ul li {
+  margin: 0 10px;
+}
+
+.profilehistory .profilenav ul li button {
+  padding: 10px 20px;
+  border: 2px solid #ccc;
+  background-color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.profilebtn {
+  background-color: #4caf50; /* Green for active tab */
+  color: white;
+  border-color: #4caf50;
+}
+.profilehistory .profilenav ul li button.active {
+  background-color: #4caf50; /* Green for active tab */
+  color: white;
+  border-color: #4caf50;
 }

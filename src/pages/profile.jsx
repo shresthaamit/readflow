@@ -1,32 +1,27 @@
 import Card from "../components/card";
-import RecommendBooks from "../components/recommended";
-import books from "./books.json";
 import EditProfile from "./editProfile";
 import "./profile.css";
 import user from "../images/heroimg4.png";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import defaults from "../images/default.png";
+
 export default function Profile() {
   const [activeSection, setActiveSection] = useState("history");
   const [activeTab, setActiveTab] = useState("downloads");
   const [userInfo, setUserInfo] = useState(null);
-  console.log(userInfo);
-  console.log("error");
+  const [favouriteBooks, setFavouriteBooks] = useState([]);
+  const [downloadedBooks, setDownloadedBooks] = useState([]); // Added for downloaded books
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const totalBooks = books.length;
-  const downloadedBooksCount = books.filter(
-    (book) => book.historyType === "download"
-  ).length;
-  const favouriteBooksCount = books.filter(
-    (book) => book.historyType === "favourite"
-  ).length;
-  const displayedBooks = books.filter((book) =>
-    activeTab === "downloads"
-      ? book.historyType === "download"
-      : book.historyType === "favourite"
-  );
+
+  // Calculate total books (favourite + downloaded)
+  const totalBooks = favouriteBooks.length + downloadedBooks.length;
+
+  // Calculate downloaded and favourite books counts
+  const downloadedBooksCount = downloadedBooks.length; // Downloaded count
+  const favouriteBooksCount = favouriteBooks.length; // Favourite count
+
   useEffect(() => {
     const token = localStorage.getItem("token"); // Retrieve token
     if (token) {
@@ -35,9 +30,11 @@ export default function Profile() {
           headers: { Authorization: `Token ${token}` },
         })
         .then((response) => {
-          setUserInfo(response.data.detail); // Update user info
+          setUserInfo(response.data.detail);
+          fetchFavoriteBooks();
+          fetchDownloadedBooks(); // Fetch downloaded books as well
         })
-        .catch((error) => {
+        .catch(() => {
           setUserInfo(null); // If error, set to null (anonymous user)
           setError("Failed to fetch user details. Please try again.");
         })
@@ -47,6 +44,47 @@ export default function Profile() {
       setIsLoading(false);
     }
   }, []);
+
+  const fetchFavoriteBooks = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .get("http://127.0.0.1:8000/books/favourites/", {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then((response) => {
+          const favBooks = response.data.results;
+          console.log("Favorite Books:", favBooks); // Check the structure of the response
+          setFavouriteBooks(favBooks); // Set the favorite books in the state
+        })
+        .catch(() => {
+          setError("Failed to fetch favorite books.");
+        });
+    }
+  };
+
+  const fetchDownloadedBooks = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .get("http://127.0.0.1:8000/books/downloads/", {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then((response) => {
+          const downloadedBooksList = response.data.results;
+          console.log("Downloaded Books:", downloadedBooksList); // Check the structure of the response
+          setDownloadedBooks(downloadedBooksList); // Set downloaded books in the state
+        })
+        .catch(() => {
+          setError("Failed to fetch downloaded books.");
+        });
+    }
+  };
+
   const imageUrl = userInfo?.profile_picture
     ? `http://127.0.0.1:8000${userInfo.profile_picture}` // Construct the full URL
     : defaults;
@@ -56,9 +94,8 @@ export default function Profile() {
       <div className="profilehead">
         <h1>My Profile</h1>
         <p>
-          Your Personal space on Readflow in the "My Profile Section". View your
-          favourite books and the downloaded and manage the account as
-          prefrences
+          Your personal space on Readflow in the "My Profile Section". View your
+          favourite books, downloaded books, and manage account preferences.
         </p>
       </div>
       <div className="accounts">
@@ -78,7 +115,10 @@ export default function Profile() {
                 <p>Please log in to see your profile details.</p>
               </>
             )}
-            <button onClick={() => setActiveSection("edit")}>
+            <button
+              className="profilebtn"
+              onClick={() => setActiveSection("edit")}
+            >
               Edit Profile
             </button>
           </div>
@@ -94,11 +134,12 @@ export default function Profile() {
               </div>
               <div className="stat">
                 <p>Favourite Books</p>
-                <p>{favouriteBooksCount}</p>
+                <p>{favouriteBooksCount}</p>{" "}
               </div>
             </div>
           </div>
         </div>
+
         {activeSection === "history" ? (
           <div className="profilehistory">
             <div className="profilenav">
@@ -122,16 +163,25 @@ export default function Profile() {
               </ul>
             </div>
             <div className="navbooks">
-              {displayedBooks.map((book) => (
-                <Card key={book.id} book={book} />
-              ))}
+              {activeTab === "favourites" && favouriteBooks.length > 0 ? (
+                favouriteBooks.map((book) => <Card key={book.id} book={book} />)
+              ) : (
+                <p>No favourite books yet!</p>
+              )}
+
+              {activeTab === "downloads" && downloadedBooks.length > 0 ? (
+                downloadedBooks.map((book) => (
+                  <Card key={book.id} book={book} />
+                ))
+              ) : (
+                <p>No downloaded books yet!</p>
+              )}
             </div>
           </div>
         ) : (
           <EditProfile onBack={() => setActiveSection("history")} />
         )}
       </div>
-      {/* </div> */}
     </>
   );
 }
