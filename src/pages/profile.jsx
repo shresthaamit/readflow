@@ -162,20 +162,27 @@ export default function Profile() {
                 </li>
               </ul>
             </div>
-            <div className="navbooks">
-              {activeTab === "favourites" && favouriteBooks.length > 0 ? (
-                favouriteBooks.map((book) => <Card key={book.id} book={book} />)
-              ) : (
-                <p>No favourite books yet!</p>
-              )}
 
-              {activeTab === "downloads" && downloadedBooks.length > 0 ? (
-                downloadedBooks.map((book) => (
-                  <Card key={book.id} book={book} />
-                ))
-              ) : (
-                <p>No downloaded books yet!</p>
-              )}
+            <div className="navbooks">
+              {activeTab === "favourites" ? (
+                favouriteBooks.length > 0 ? (
+                  favouriteBooks.map((books) => (
+                    <Card key={books.id} book={books.book} />
+                  ))
+                ) : (
+                  <p>No favourite books yet!</p>
+                )
+              ) : null}
+
+              {activeTab === "downloads" ? (
+                downloadedBooks.length > 0 ? (
+                  downloadedBooks.map((book) => (
+                    <Card key={book.id} book={book} />
+                  ))
+                ) : (
+                  <p>No downloaded books yet!</p>
+                )
+              ) : null}
             </div>
           </div>
         ) : (

@@ -6,16 +6,13 @@ import { SlArrowRight } from "react-icons/sl";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 export default function Card({ book }) {
+  console.log("the books are", book);
   return (
     <>
       <div className="cards">
         <div className="card">
           <img
-            src={
-              book.image
-                ? `http://localhost:8000${book.image}`
-                : "../images/Working.gif"
-            }
+            src={book.image ? book.image : "../images/Working.gif"}
             alt={book.title || "Book Cover"}
           />
           <div className="carddetail">
