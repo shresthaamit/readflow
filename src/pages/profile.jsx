@@ -84,6 +84,31 @@ export default function Profile() {
         });
     }
   };
+  const removeFromFavorites = (bookId) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You need to be logged in to remove from favorites.");
+      return;
+    }
+
+    axios
+      .delete(`http://127.0.0.1:8000/books/${bookId}/removefavorite/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then(() => {
+        console.log("Book removed from favorites");
+        // Update state to remove the book from the list of favorite books
+        setFavouriteBooks((prevBooks) =>
+          prevBooks.filter((book) => book.id !== bookId)
+        );
+      })
+      .catch((error) => {
+        console.error("Error removing from favorites:", error);
+        setError("Failed to remove book from favorites.");
+      });
+  };
 
   const imageUrl = userInfo?.profile_picture
     ? `http://127.0.0.1:8000${userInfo.profile_picture}` // Construct the full URL
@@ -167,7 +192,12 @@ export default function Profile() {
               {activeTab === "favourites" ? (
                 favouriteBooks.length > 0 ? (
                   favouriteBooks.map((books) => (
-                    <Card key={books.id} book={books.book} />
+                    <Card
+                      key={books.id}
+                      book={books.book}
+                      isProfilePage={true} // New prop to indicate it's the profile page
+                      removeFromFavorites={removeFromFavorites}
+                    />
                   ))
                 ) : (
                   <p>No favourite books yet!</p>

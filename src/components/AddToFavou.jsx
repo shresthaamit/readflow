@@ -6,6 +6,7 @@ import "../pages/books.css";
 const AddToFavorites = ({ bookId, onAlreadyFavorited }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
   const [error, setError] = useState("");
 
   const handleAddFavorite = () => {

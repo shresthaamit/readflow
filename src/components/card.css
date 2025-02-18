@@ -68,7 +68,8 @@
 .buttonss {
   justify-content: space-between;
 }
-.bookbuttons .buttons {
+.bookbuttons .buttons,
+.remove-favorite-btn {
   display: inline-flex;
   padding: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;

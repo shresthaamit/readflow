@@ -5,7 +5,7 @@ import "./card.css";
 import { SlArrowRight } from "react-icons/sl";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
-export default function Card({ book }) {
+export default function Card({ book, isProfilePage, removeFromFavorites }) {
   console.log("the books are", book);
   return (
     <>
@@ -41,12 +41,27 @@ export default function Card({ book }) {
                 <SlArrowRight />
               </span>
             </Link>
-            <Link to="button" className="buttons">
-              Add to favourite
-              <span>
-                <BsFillBookmarkHeartFill />
-              </span>
-            </Link>
+            {!isProfilePage && (
+              <Link to="button" className="buttons">
+                Add to favourite
+                <span>
+                  <BsFillBookmarkHeartFill />
+                </span>
+              </Link>
+            )}
+
+            {/* Show Remove from Favorite only if on profile page */}
+            {isProfilePage && (
+              <button
+                className="remove-favorite-btn"
+                onClick={() => removeFromFavorites(book.id)}
+              >
+                Remove
+                <span>
+                  <BsFillBookmarkHeartFill />
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </div>
