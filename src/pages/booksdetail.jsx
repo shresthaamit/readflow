@@ -229,7 +229,7 @@ export default function BookDetails() {
 
   // Loading state or error handling when data is still loading
   if (isLoading) {
-    console.log("Loading");
+    // console.log("Loading");
     return <p>Loading...</p>;
   }
 
