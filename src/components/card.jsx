@@ -7,6 +7,7 @@ import { BsFillBookmarkHeartFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 export default function Card({ book, isProfilePage, removeFromFavorites }) {
   console.log("the books are", book);
+
   return (
     <>
       <div className="cards">

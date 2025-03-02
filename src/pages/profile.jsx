@@ -14,6 +14,7 @@ export default function Profile() {
   const [downloadedBooks, setDownloadedBooks] = useState([]); // Added for downloaded books
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [loadingBookId, setLoadingBookId] = useState(null);
 
   // Calculate total books (favourite + downloaded)
   const totalBooks = favouriteBooks.length + downloadedBooks.length;
@@ -57,7 +58,7 @@ export default function Profile() {
         .then((response) => {
           const favBooks = response.data.results;
           console.log("Favorite Books:", favBooks); // Check the structure of the response
-          setFavouriteBooks(favBooks); // Set the favorite books in the state
+          setFavouriteBooks(response.data.results); // Set the favorite books in the state
         })
         .catch(() => {
           setError("Failed to fetch favorite books.");
@@ -90,7 +91,7 @@ export default function Profile() {
       alert("You need to be logged in to remove from favorites.");
       return;
     }
-
+    setLoadingBookId(bookId);
     axios
       .delete(`http://127.0.0.1:8000/books/${bookId}/removefavorite/`, {
         headers: {
@@ -99,14 +100,18 @@ export default function Profile() {
       })
       .then(() => {
         console.log("Book removed from favorites");
-        // Update state to remove the book from the list of favorite books
         setFavouriteBooks((prevBooks) =>
           prevBooks.filter((book) => book.id !== bookId)
         );
+        // Update state to remove the book from the list of favorite books
       })
       .catch((error) => {
         console.error("Error removing from favorites:", error);
         setError("Failed to remove book from favorites.");
+        // fetchFavoriteBooks();
+      })
+      .finally(() => {
+        setLoadingBookId(null); // Reset the loading state
       });
   };
 
@@ -194,7 +199,7 @@ export default function Profile() {
                   favouriteBooks.map((books) => (
                     <Card
                       key={books.id}
-                      book={books.book}
+                      book={books.book_detail}
                       isProfilePage={true} // New prop to indicate it's the profile page
                       removeFromFavorites={removeFromFavorites}
                     />

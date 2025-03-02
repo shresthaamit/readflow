@@ -9,7 +9,11 @@ const EditDelete = ({ onEdit, onDelete }) => {
       </button>
 
       {/* Delete Button */}
-      <button className="delete-button" onClick={onDelete}>
+      <button
+        className="delete-button"
+        onClick={onDelete}
+        style={{ cursor: "pointer" }}
+      >
         Delete
       </button>
     </div>
