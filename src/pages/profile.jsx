@@ -99,7 +99,7 @@ export default function Profile() {
         },
       })
       .then(() => {
-        // console.log("Book removed from favorites");
+        console.log("Book removed from favorites");
         setFavouriteBooks((prevBooks) =>
           prevBooks.filter((book) => book.id !== bookId)
         );
