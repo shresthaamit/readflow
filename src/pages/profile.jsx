@@ -145,12 +145,17 @@ export default function Profile() {
                 <p>Please log in to see your profile details.</p>
               </>
             )}
-            <button
-              className="profilebtn"
-              onClick={() => setActiveSection("edit")}
-            >
-              Edit Profile
-            </button>
+            <div className="buton">
+              <button
+                className="profilebtn"
+                onClick={() => setActiveSection("edit")}
+              >
+                Edit Profile
+              </button>
+              {userInfo?.usertype === true && (
+                <button className="profilebtn">Add Books</button>
+              )}
+            </div>
           </div>
           <div className="profileright">
             <div className="profile-stats">

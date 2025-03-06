@@ -3,7 +3,7 @@ import ButtonGroup from "../components/ButtonGroup";
 import Loginpic from "../images/login.jpg";
 import "./loginregister.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 export default function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -20,6 +20,11 @@ export default function Login() {
     setError("");
     setSuccess(false);
   };
+  const handleRegisterRedirect = () => {
+    // Redirect to the register page when the user clicks on 'Sign Up'
+    navigate("/register");
+  };
+
   const handleLogin = async (event) => {
     event.preventDefault();
     setError("");
@@ -101,7 +106,14 @@ export default function Login() {
           {error && <p className="error-message">{error}</p>}
           {success && <p className="success-message">Login successful!</p>}
         </form>
+        <p>
+          Don't have an account?{" "}
+          <Link to="/register" className="register-link">
+            Sign Up
+          </Link>
+        </p>
       </div>
+
       <div className="loginimg">
         <img src={Loginpic} alt="" />
       </div>

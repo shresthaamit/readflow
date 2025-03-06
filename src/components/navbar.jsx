@@ -1,21 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./navbar.css";
 import logo from "../images/logo.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
 import {
   FaInstagram,
   FaYoutube,
   FaTwitter,
   FaFacebook,
-  FaHeadset,
   FaSearch,
-  FaUser,
   FaRegUser,
 } from "react-icons/fa";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 function Searchbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
@@ -23,9 +20,9 @@ function Searchbar() {
   const handelInputChange = (event) => {
     setSearchQuery(event.target.value);
   };
+
   const handleSearch = () => {
     console.log("Searching for:", searchQuery);
-    // Navigate to the books page with search query as URL parameter
     if (searchQuery) {
       navigate(`/books?search=${searchQuery}`);
     }
@@ -41,7 +38,7 @@ function Searchbar() {
         placeholder="Enter Book Title"
         onKeyDown={(event) => {
           if (event.key === "Enter") {
-            handleSearch(); // Trigger search on pressing Enter
+            handleSearch();
           }
         }}
       />
@@ -53,17 +50,9 @@ function Searchbar() {
 }
 
 function Navbar() {
-  const [isLoggedIn, setLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [isLoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setLoggedIn(!!token); // Set to true if token exists, false otherwise
-  }, []);
-  // useEffect(() => {
-  //   // Check local storage for login status
-  //   const userLoggedIn = localStorage.getItem("userLoggedIn");
-  //   setLoggedIn(userLoggedIn === "true");
-  // }, []);
+
   const handleButtonClick = async () => {
     if (isLoggedIn) {
       try {
@@ -77,22 +66,42 @@ function Navbar() {
           }
         );
 
-        // Log out: Remove token and update state
+        // Remove token and update state
         localStorage.removeItem("token");
         setLoggedIn(false);
-        navigate("/login"); // Redirect to login page after logout
+        navigate("/login");
       } catch (error) {
         console.error("Logout failed:", error);
       }
     } else {
-      // Redirect to login page if not logged in
       navigate("/login");
     }
   };
+
+  // This function checks login status directly from localStorage
+  const checkLoginStatus = () => {
+    const token = localStorage.getItem("token");
+    setLoggedIn(!!token); // If token exists, user is logged in
+  };
+
+  useEffect(() => {
+    checkLoginStatus(); // Check on mount
+
+    // Listen to changes in localStorage (for login/logout from other tabs)
+    const handleStorageChange = () => {
+      checkLoginStatus();
+    };
+
+    window.addEventListener("storage", handleStorageChange); // Listen for changes in localStorage
+
+    // Cleanup listener on component unmount
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []); // Runs only once on mount
+
   return (
     <div className="navbar">
-      {" "}
-      {/* You can replace this with <header> or <nav> */}
       <div className="navhead">
         <div className="navhead-left">
           <p>Welcome to Readflow</p>
@@ -138,11 +147,6 @@ function Navbar() {
             />
           </div>
           <div className="separator"></div>
-          {/* <div className="callimage">
-                    <a href="https://twitter.com" target="_blank" rel="noreferrer">
-                  <FaHeadset />
-                </a>
-                    </div> */}
         </div>
 
         <div className="navbodyright">
