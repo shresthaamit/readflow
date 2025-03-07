@@ -5,9 +5,12 @@ import user from "../images/heroimg4.png";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import defaults from "../images/default.png";
+import { useNavigate } from "react-router-dom";
+import AddBook from "./addbooks"; // Import AddBook component
 
 export default function Profile() {
-  const [activeSection, setActiveSection] = useState("history");
+  const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState("history"); // Initially shows history
   const [activeTab, setActiveTab] = useState("downloads");
   const [userInfo, setUserInfo] = useState(null);
   const [favouriteBooks, setFavouriteBooks] = useState([]);
@@ -85,6 +88,7 @@ export default function Profile() {
         });
     }
   };
+
   const removeFromFavorites = (bookId) => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -119,6 +123,11 @@ export default function Profile() {
     ? `http://127.0.0.1:8000${userInfo.profile_picture}` // Construct the full URL
     : defaults;
 
+  // Handle the click on "Add Books"
+  const handleAddBook = () => {
+    setActiveSection("addbook"); // Switch to the "addbook" section
+  };
+
   return (
     <>
       <div className="profilehead">
@@ -152,9 +161,12 @@ export default function Profile() {
               >
                 Edit Profile
               </button>
-              {userInfo?.usertype === true && (
-                <button className="profilebtn">Add Books</button>
-              )}
+              <button
+                className="profilebtn"
+                onClick={handleAddBook} // Set the section to "addbook"
+              >
+                Add Books
+              </button>
             </div>
           </div>
           <div className="profileright">
@@ -169,7 +181,7 @@ export default function Profile() {
               </div>
               <div className="stat">
                 <p>Favourite Books</p>
-                <p>{favouriteBooksCount}</p>{" "}
+                <p>{favouriteBooksCount}</p>
               </div>
             </div>
           </div>
@@ -225,6 +237,8 @@ export default function Profile() {
               ) : null}
             </div>
           </div>
+        ) : activeSection === "addbook" ? (
+          <AddBook onBack={() => setActiveSection("history")} /> // Render AddBook when activeSection is "addbook"
         ) : (
           <EditProfile onBack={() => setActiveSection("history")} />
         )}
