@@ -11,27 +11,31 @@ const AddBook = ({ onBack, onBookAdded }) => {
     image: null,
     pdf: null,
     publisher: null, // Set to null initially
-    publication_date: null, // Set to null initially
+    publication_date: "", // Set to empty initially
+    distribution_expenses: "", // Add field for distribution_expenses if needed
   });
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [categories, setCategories] = useState([]); // Correctly named state
-  const [selectedCategory, setSelectedCategory] = useState(""); // Keeping selected category in state
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
-    // Fetch categories from your API for the category dropdown
     const fetchCategories = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:8000/category/");
-
-        // Ensure the response is an array
-        if (Array.isArray(response.data)) {
-          setCategories(response.data);
+        console.log("Categories fetched:", response.data); // Log the response from the API to check the data
+        if (Array.isArray(response.data.results)) {
+          const categoriesData = response.data.results.map((category) => ({
+            id: category.id,
+            name: category.name,
+          }));
+          setCategories(categoriesData);
         } else {
           setError("Invalid data format for categories.");
         }
       } catch (err) {
         setError("Failed to load categories.");
+        console.error("Error fetching categories:", err); // Log error if fetching categories fails
       }
     };
 
@@ -39,8 +43,9 @@ const AddBook = ({ onBack, onBookAdded }) => {
   }, []);
 
   const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value); // Update selected category
-    setFormData({ ...formData, category: e.target.value }); // Update formData as well
+    setSelectedCategory(e.target.value);
+    setFormData({ ...formData, category: e.target.value });
+    console.log("Selected category:", e.target.value); // Log the selected category value
   };
 
   const handleChange = (e) => {
@@ -49,6 +54,7 @@ const AddBook = ({ onBack, onBookAdded }) => {
       ...prevData,
       [name]: value,
     }));
+    console.log("Form data updated:", formData); // Log the updated form data
   };
 
   const handleFileChange = (e) => {
@@ -57,6 +63,7 @@ const AddBook = ({ onBack, onBookAdded }) => {
       ...prevData,
       [name]: files[0],
     }));
+    console.log(`${name} file updated:`, files[0]); // Log the file selected
   };
 
   const handleCancel = () => {
@@ -67,15 +74,29 @@ const AddBook = ({ onBack, onBookAdded }) => {
       category: "",
       image: null,
       pdf: null,
-      publisher: null, // Reset publisher to null
-      publication_date: null, // Reset publication_date to null
+      publisher: null,
+      publication_date: "",
+      distribution_expenses: "", // Reset distribution_expenses
     });
-    setSuccessMessage(""); // Clear any success message
-    setError(""); // Clear any error message
+    setSuccessMessage("");
+    setError("");
+    console.log("Form reset"); // Log when form is reset
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Ensure publication_date is in the correct format (YYYY-MM-DD)
+    const formattedDate = new Date(formData.publication_date)
+      .toISOString()
+      .split("T")[0];
+    if (isNaN(new Date(formData.publication_date))) {
+      setError("Invalid publication date format. Use YYYY-MM-DD.");
+      console.log("Invalid publication date:", formData.publication_date); // Log invalid date format
+      return;
+    }
+
+    console.log("Submitting form with data:", formData); // Log the form data before submitting
 
     const data = new FormData();
     if (formData.image instanceof File) {
@@ -85,24 +106,23 @@ const AddBook = ({ onBack, onBookAdded }) => {
       data.append("pdf", formData.pdf);
     }
 
-    // Append form data to the FormData object (including publisher and publication_date with null)
     Object.keys(formData).forEach((key) => {
       if (key !== "image" && key !== "pdf" && formData[key] !== "") {
         data.append(key, formData[key] !== null ? formData[key] : null);
       }
     });
+    // Add the formatted date
+    data.append("publication_date", formattedDate);
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/books/", // Assuming the endpoint to create a new book is a POST request to /books/
-        data,
-        {
-          headers: {
-            Authorization: `Token ${localStorage.getItem("token")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post("http://127.0.0.1:8000/books/", data, {
+        headers: {
+          Authorization: `Token ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("Book added successfully:", response.data); // Log the successful response from the API
       setSuccessMessage("Book added successfully!");
       setFormData({
         title: "",
@@ -111,14 +131,13 @@ const AddBook = ({ onBack, onBookAdded }) => {
         category: "",
         image: null,
         pdf: null,
-        publisher: null, // Reset publisher to null
-        publication_date: null, // Reset publication_date to null
-      }); // Reset the form after success
-      if (onBookAdded) onBookAdded(response.data); // Pass the new book data to the parent component
-
-      // Log success message to console
-      console.log("Book successfully uploaded:", response.data);
+        publisher: null,
+        publication_date: "",
+        distribution_expenses: "", // Reset distribution_expenses
+      });
+      if (onBookAdded) onBookAdded(response.data);
     } catch (err) {
+      console.error("Error response:", err.response); // Log the error response if the request fails
       if (err.response && err.response.status === 401) {
         setError("Unauthorized. Please log in again.");
         localStorage.removeItem("token");
@@ -163,7 +182,7 @@ const AddBook = ({ onBack, onBookAdded }) => {
         required
       >
         <option value="">Select Category</option>
-        {Array.isArray(categories) && categories.length > 0 ? (
+        {categories.length > 0 ? (
           categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
@@ -186,6 +205,22 @@ const AddBook = ({ onBack, onBookAdded }) => {
         name="pdf"
         accept="application/pdf"
         onChange={handleFileChange}
+      />
+      <label>Publication Date (Required):</label>
+      <input
+        type="date"
+        name="publication_date"
+        value={formData.publication_date}
+        onChange={handleChange}
+        required
+      />
+      <label>Distribution Expenses:</label>
+      <input
+        type="text"
+        name="distribution_expenses"
+        value={formData.distribution_expenses}
+        onChange={handleChange}
+        placeholder="Enter distribution expenses (Optional)"
       />
 
       {formData.image && (
