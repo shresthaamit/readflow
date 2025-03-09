@@ -35,6 +35,7 @@ export default function Profile() {
         })
         .then((response) => {
           setUserInfo(response.data.detail);
+          console.log("User Info:", response.data.detail); // Debug logging
           fetchFavoriteBooks();
           fetchDownloadedBooks(); // Fetch downloaded books as well
         })
@@ -60,8 +61,8 @@ export default function Profile() {
         })
         .then((response) => {
           const favBooks = response.data.results;
-          console.log("Favorite Books:", favBooks); // Check the structure of the response
-          setFavouriteBooks(response.data.results); // Set the favorite books in the state
+          console.log("Favorite Books:", favBooks); // Debug logging
+          setFavouriteBooks(favBooks); // Set the favorite books in the state
         })
         .catch(() => {
           setError("Failed to fetch favorite books.");
@@ -80,7 +81,7 @@ export default function Profile() {
         })
         .then((response) => {
           const downloadedBooksList = response.data.results;
-          console.log("Downloaded Books:", downloadedBooksList); // Check the structure of the response
+          console.log("Downloaded Books:", downloadedBooksList); // Debug logging
           setDownloadedBooks(downloadedBooksList); // Set downloaded books in the state
         })
         .catch(() => {
@@ -103,16 +104,13 @@ export default function Profile() {
         },
       })
       .then(() => {
-        // console.log("Book removed from favorites");
         setFavouriteBooks((prevBooks) =>
           prevBooks.filter((book) => book.id !== bookId)
         );
-        // Update state to remove the book from the list of favorite books
       })
       .catch((error) => {
         console.error("Error removing from favorites:", error);
         setError("Failed to remove book from favorites.");
-        // fetchFavoriteBooks();
       })
       .finally(() => {
         setLoadingBookId(null); // Reset the loading state
@@ -161,12 +159,16 @@ export default function Profile() {
               >
                 Edit Profile
               </button>
-              <button
-                className="profilebtn"
-                onClick={handleAddBook} // Set the section to "addbook"
-              >
-                Add Books
-              </button>
+              {userInfo?.usertype && ( // Check if the user is a staff member
+                <button className="profilebtn" onClick={handleAddBook}>
+                  Add Books
+                </button>
+              )}
+              {userInfo?.usertype && ( // Check if the user is a staff member
+                <button className="profilebtn" onClick={handleAddBook}>
+                  View Books
+                </button>
+              )}
             </div>
           </div>
           <div className="profileright">
