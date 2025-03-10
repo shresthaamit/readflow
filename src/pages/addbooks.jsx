@@ -115,12 +115,16 @@ const AddBook = ({ onBack, onBookAdded }) => {
     data.append("publication_date", formattedDate);
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/books/", data, {
-        headers: {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "http://127.0.0.1:8000/books/accounts/",
+        data,
+        {
+          headers: {
+            Authorization: `Token ${localStorage.getItem("token")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       console.log("Book added successfully:", response.data); // Log the successful response from the API
       setSuccessMessage("Book added successfully!");
