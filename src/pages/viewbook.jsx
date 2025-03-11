@@ -34,6 +34,7 @@ function StaffBooks() {
       // Update the fetch URL to get books uploaded by the logged-in user
       const response = await fetch("http://localhost:8000/books/accounts/");
       const data = await response.json();
+      console.log(data.results);
       setBooks(data.results);
     };
     fetchBooks();
