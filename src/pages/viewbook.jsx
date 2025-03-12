@@ -1,154 +1,101 @@
-import React, { useEffect } from "react";
-import Footer from "../components/footer";
-import Navbar from "../components/navbar";
-import "./books.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { LuDownload } from "react-icons/lu";
-import { SlArrowRight } from "react-icons/sl";
-import { BsFillBookmarkHeartFill } from "react-icons/bs";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import "./staffbooks.css";
 
 function StaffBooks() {
-  const [selectcategory, setSelectedCategory] = useState(null);
-  const [selectauthor, setSelectedAuthor] = useState(null);
-  const [books, setBooks] = useState(null);
-  const location = useLocation();
-  const navigate = useNavigate(); // For updating URL without reloading the page
-  const searchParams = new URLSearchParams(location.search);
-  const searchQuery = searchParams.get("search");
-  const categories = [...new Set(books?.map((book) => book.category))];
-  const authors = [...new Set(books?.map((book) => book.author))];
-
-  const filteredbooks = books?.filter((book) => {
-    if (searchQuery) {
-      return book.title.toLowerCase().includes(searchQuery.toLowerCase()); // Filter by title
-    }
-    if (selectcategory || selectauthor) {
-      return book.category === selectcategory || book.author === selectauthor;
-    }
-    return true;
-  });
+  const [books, setBooks] = useState([]);
 
   useEffect(() => {
+    // Fetch books from the API
     const fetchBooks = async () => {
-      // Update the fetch URL to get books uploaded by the logged-in user
-      const response = await fetch("http://localhost:8000/books/accounts/");
-      const data = await response.json();
-      console.log(data.results);
-      setBooks(data.results);
+      const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+
+      if (!token) {
+        alert("You are not logged in. Please log in first.");
+        window.location.href = "/login"; // Redirect to login page if no token
+        return;
+      }
+
+      // Adding the Authorization header with the Token (for DRF authentication)
+      const response = await fetch(
+        "http://127.0.0.1:8000/books/accounts/viewbook/",
+        {
+          headers: {
+            Authorization: `Token ${token}`, // Use 'Token' instead of 'Bearer'
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data); // Log the data for debugging
+        setBooks(data); // Assuming data contains the book list directly
+      } else {
+        console.error(
+          "Failed to fetch books:",
+          response.status,
+          response.statusText
+        );
+        if (response.status === 401) {
+          alert("Unauthorized: Please log in again");
+          localStorage.removeItem("token"); // Clear invalid token
+          window.location.href = "/login"; // Redirect to login page
+        }
+      }
     };
+
     fetchBooks();
   }, []);
 
-  const handleclick = (category) => {
-    setSelectedCategory(category === selectcategory ? null : category);
-    if (category === null && selectauthor === null) {
-      navigate("/books");
-    }
-  };
-
-  const handleAuthorbuttons = (author) => {
-    setSelectedAuthor(author === selectauthor ? null : author);
-    if (author === null && selectcategory === null) {
-      navigate("/books");
-    }
-  };
-
   return (
     <>
-      <h1 className="title">Your Books</h1>
-      <div className="booksection">
-        <div className="booksearch">
-          <div className="category">
-            <h1>Book Categories</h1>
-            <div className="category-buttons">
-              <button
-                onClick={() => {
-                  setSelectedCategory(null);
-                  setSelectedAuthor(null);
-                  navigate("/books");
-                }}
-                className="category-button"
-              >
-                All
-              </button>
-              {categories.map((category, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleclick(category)}
-                  className="category-button"
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="popularauthor">
-            <h1>Popular Authors</h1>
-            <div className="author-buttons">
-              <button
-                onClick={() => {
-                  setSelectedCategory(null);
-                  setSelectedAuthor(null);
-                  navigate("/books");
-                }}
-                className="author-button"
-              >
-                All
-              </button>
-              {authors.map((author, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleAuthorbuttons(author)}
-                  className="author-button"
-                >
-                  {author}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="books">
-          {filteredbooks?.map((book) => (
-            <div key={book.id} className="book-card">
-              <div className="bookimg">
-                <img
-                  src={`http://localhost:8000${book.image}`}
-                  alt={book.title}
-                />
-              </div>
-              <div className="carddetail">
-                <div className="detail1">
-                  <img src={book.star} alt="rating star" />
-                  <span>{book.rating}</span>
-                  <span className="span">(6) • </span>
-                  <span className="span">{book.category}</span>
+      <h1 className="staff-books-title">Your Books</h1>
+      <div className="staff-booksection">
+        <div className="staff-books">
+          {books?.length > 0 ? (
+            books.map((book) => (
+              <div key={book.id} className="staff-book-card">
+                <div className="staff-bookimg">
+                  <img
+                    src={`http://localhost:8000${book.image}`} // Correct image URL
+                    alt={book.title}
+                  />
                 </div>
-                <p className="author"> {book.author.split(" ")[0]}</p>
+                <div className="staff-carddetails">
+                  <h3>{book.title}</h3>
+                  <p className="author">{book.author.split(" ")[0]}</p>
+                  <p className="staff-category">{book.category}</p>
+                  <p className="staff-rating">{book.rating} / 5</p>
+                </div>
+                <div className="staff-book-actions">
+                  <Link
+                    to={`/books/accounts/edit/${book.id}`}
+                    className="staff-edit-btn"
+                  >
+                    <FaEdit /> Edit
+                  </Link>
+                  <button
+                    className="staff-delete-btn"
+                    onClick={() => handleDelete(book.id)}
+                  >
+                    <FaTrash /> Delete
+                  </button>
+                </div>
               </div>
-              <p>
-                <span className="book-title">{book.title}</span>
-              </p>
-              <div className="bookbuttons">
-                <Link to={`/books/accounts/${book.id}`} className="buttons">
-                  Detail
-                  <span>
-                    <SlArrowRight />
-                  </span>
-                </Link>
-                <Link to="button" className="buttons">
-                  Download
-                  <span>
-                    <LuDownload />
-                  </span>
-                </Link>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No books uploaded yet.</p>
+          )}
         </div>
       </div>
     </>
   );
+
+  function handleDelete(bookId) {
+    // Handle delete book action (you can make an API call here)
+    console.log(`Delete book with id: ${bookId}`);
+  }
 }
 
 export default StaffBooks;

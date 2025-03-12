@@ -7,7 +7,7 @@ import axios from "axios";
 import defaults from "../images/default.png";
 import { useNavigate } from "react-router-dom";
 import AddBook from "./addbooks"; // Import AddBook component
-
+import StaffBooks from "./viewbook";
 export default function Profile() {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("history"); // Initially shows history
@@ -165,7 +165,10 @@ export default function Profile() {
                 </button>
               )}
               {userInfo?.usertype && ( // Check if the user is a staff member
-                <button className="profilebtn" onClick={handleAddBook}>
+                <button
+                  className="profilebtn"
+                  onClick={() => navigate("/books/staffbooks")} // Navigate to the correct route
+                >
                   View Books
                 </button>
               )}

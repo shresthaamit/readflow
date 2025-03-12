@@ -14,6 +14,7 @@ import Profile from "./pages/profile";
 import Login from "./pages/login";
 import Register from "./pages/register";
 import AddBook from "./pages/addbooks";
+import StaffBooks from "./pages/viewbook";
 import "../src/components/card.css";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 function Book() {
@@ -106,6 +107,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/books/staffbooks" element={<StaffBooks />} />
         {/* <Route path="/add-book" element={<AddBook />} /> */}
       </Routes>
 
