@@ -29,7 +29,7 @@ function StaffBooks() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data); // Log the data for debugging
+        // console.log(data); // Log the data for debugging
         setBooks(data); // Assuming data contains the book list directly
       } else {
         console.error(
