@@ -107,7 +107,9 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/books/staffbooks" element={<StaffBooks />} />
+        {/* <Route path="/books/staffbooks" element={<StaffBooks />} /> */}
+        {/* <Route path="/books/accounts/edit/:id" element={<AddBook />} /> */}
+
         {/* <Route path="/add-book" element={<AddBook />} /> */}
       </Routes>
 

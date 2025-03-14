@@ -29,7 +29,6 @@ function StaffBooks() {
 
       if (response.ok) {
         const data = await response.json();
-        // console.log(data); // Log the data for debugging
         setBooks(data); // Assuming data contains the book list directly
       } else {
         console.error(
@@ -50,7 +49,7 @@ function StaffBooks() {
 
   return (
     <>
-      <h1 className="staff-books-title">Your Books</h1>
+      {/* <h1 className="staff-books-title">Your Books</h1> */}
       <div className="staff-booksection">
         <div className="staff-books">
           {books?.length > 0 ? (

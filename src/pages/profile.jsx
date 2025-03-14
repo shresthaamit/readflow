@@ -7,14 +7,15 @@ import axios from "axios";
 import defaults from "../images/default.png";
 import { useNavigate } from "react-router-dom";
 import AddBook from "./addbooks"; // Import AddBook component
-import StaffBooks from "./viewbook";
+import StaffBooks from "./viewbook"; // Import StaffBooks component
+
 export default function Profile() {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("history"); // Initially shows history
   const [activeTab, setActiveTab] = useState("downloads");
   const [userInfo, setUserInfo] = useState(null);
   const [favouriteBooks, setFavouriteBooks] = useState([]);
-  const [downloadedBooks, setDownloadedBooks] = useState([]); // Added for downloaded books
+  const [downloadedBooks, setDownloadedBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [loadingBookId, setLoadingBookId] = useState(null);
@@ -23,8 +24,8 @@ export default function Profile() {
   const totalBooks = favouriteBooks.length + downloadedBooks.length;
 
   // Calculate downloaded and favourite books counts
-  const downloadedBooksCount = downloadedBooks.length; // Downloaded count
-  const favouriteBooksCount = favouriteBooks.length; // Favourite count
+  const downloadedBooksCount = downloadedBooks.length;
+  const favouriteBooksCount = favouriteBooks.length;
 
   useEffect(() => {
     const token = localStorage.getItem("token"); // Retrieve token
@@ -35,7 +36,6 @@ export default function Profile() {
         })
         .then((response) => {
           setUserInfo(response.data.detail);
-          console.log("User Info:", response.data.detail); // Debug logging
           fetchFavoriteBooks();
           fetchDownloadedBooks(); // Fetch downloaded books as well
         })
@@ -61,7 +61,6 @@ export default function Profile() {
         })
         .then((response) => {
           const favBooks = response.data.results;
-          console.log("Favorite Books:", favBooks); // Debug logging
           setFavouriteBooks(favBooks); // Set the favorite books in the state
         })
         .catch(() => {
@@ -81,7 +80,6 @@ export default function Profile() {
         })
         .then((response) => {
           const downloadedBooksList = response.data.results;
-          console.log("Downloaded Books:", downloadedBooksList); // Debug logging
           setDownloadedBooks(downloadedBooksList); // Set downloaded books in the state
         })
         .catch(() => {
@@ -109,7 +107,6 @@ export default function Profile() {
         );
       })
       .catch((error) => {
-        console.error("Error removing from favorites:", error);
         setError("Failed to remove book from favorites.");
       })
       .finally(() => {
@@ -124,6 +121,10 @@ export default function Profile() {
   // Handle the click on "Add Books"
   const handleAddBook = () => {
     setActiveSection("addbook"); // Switch to the "addbook" section
+  };
+
+  const handleViewBooks = () => {
+    setActiveSection("viewbooks"); // Switch to "viewbooks" section (StaffBooks)
   };
 
   return (
@@ -159,18 +160,15 @@ export default function Profile() {
               >
                 Edit Profile
               </button>
-              {userInfo?.usertype && ( // Check if the user is a staff member
-                <button className="profilebtn" onClick={handleAddBook}>
-                  Add Books
-                </button>
-              )}
-              {userInfo?.usertype && ( // Check if the user is a staff member
-                <button
-                  className="profilebtn"
-                  onClick={() => navigate("/books/staffbooks")} // Navigate to the correct route
-                >
-                  View Books
-                </button>
+              {userInfo?.usertype && (
+                <>
+                  <button className="profilebtn" onClick={handleAddBook}>
+                    Add Books
+                  </button>
+                  <button className="profilebtn" onClick={handleViewBooks}>
+                    View Books
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -192,7 +190,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {activeSection === "history" ? (
+        {activeSection === "history" && (
           <div className="profilehistory">
             <div className="profilenav">
               <ul>
@@ -242,11 +240,17 @@ export default function Profile() {
               ) : null}
             </div>
           </div>
-        ) : activeSection === "addbook" ? (
-          <AddBook onBack={() => setActiveSection("history")} /> // Render AddBook when activeSection is "addbook"
-        ) : (
+        )}
+
+        {activeSection === "addbook" && (
+          <AddBook onBack={() => setActiveSection("history")} />
+        )}
+
+        {activeSection === "edit" && (
           <EditProfile onBack={() => setActiveSection("history")} />
         )}
+
+        {activeSection === "viewbooks" && <StaffBooks />}
       </div>
     </>
   );
