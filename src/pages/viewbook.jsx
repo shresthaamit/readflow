@@ -69,7 +69,7 @@ function StaffBooks() {
                 </div>
                 <div className="staff-book-actions">
                   <Link
-                    to={`/books/accounts/edit/${book.id}`}
+                    to={""} // Corrected to use book.id
                     className="staff-edit-btn"
                   >
                     <FaEdit /> Edit

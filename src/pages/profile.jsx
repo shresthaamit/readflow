@@ -5,7 +5,7 @@ import user from "../images/heroimg4.png";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import defaults from "../images/default.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AddBook from "./addbooks"; // Import AddBook component
 import StaffBooks from "./viewbook"; // Import StaffBooks component
 
@@ -19,13 +19,28 @@ export default function Profile() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [loadingBookId, setLoadingBookId] = useState(null);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const editBookId = searchParams.get("edit"); // Get book ID for editing
+  const [bookToEdit, setBookToEdit] = useState(null);
 
-  // Calculate total books (favourite + downloaded)
-  const totalBooks = favouriteBooks.length + downloadedBooks.length;
-
-  // Calculate downloaded and favourite books counts
-  const downloadedBooksCount = downloadedBooks.length;
-  const favouriteBooksCount = favouriteBooks.length;
+  // Fetch the book details for editing if editBookId is present
+  useEffect(() => {
+    if (editBookId) {
+      axios
+        .get(`http://127.0.0.1:8000/books/accounts/${editBookId}/`, {
+          headers: {
+            Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          setBookToEdit(response.data); // Set the book data for editing
+        })
+        .catch((err) => {
+          console.error("Error fetching book details:", err);
+        });
+    }
+  }, [editBookId]);
 
   useEffect(() => {
     const token = localStorage.getItem("token"); // Retrieve token
@@ -176,15 +191,15 @@ export default function Profile() {
             <div className="profile-stats">
               <div className="stat">
                 <p>Total Books</p>
-                <p>{totalBooks}</p>
+                <p>{favouriteBooks.length + downloadedBooks.length}</p>
               </div>
               <div className="stat">
                 <p>Downloaded Books</p>
-                <p>{downloadedBooksCount}</p>
+                <p>{downloadedBooks.length}</p>
               </div>
               <div className="stat">
                 <p>Favourite Books</p>
-                <p>{favouriteBooksCount}</p>
+                <p>{favouriteBooks.length}</p>
               </div>
             </div>
           </div>
@@ -243,7 +258,10 @@ export default function Profile() {
         )}
 
         {activeSection === "addbook" && (
-          <AddBook onBack={() => setActiveSection("history")} />
+          <AddBook
+            // Pass the book data if it's in edit mode
+            onBack={() => setActiveSection("history")}
+          />
         )}
 
         {activeSection === "edit" && (
