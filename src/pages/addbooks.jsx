@@ -23,7 +23,7 @@ const AddBook = ({ onBack, onBookAdded }) => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:8000/category/");
-        console.log("Categories fetched:", response.data); // Log the response from the API to check the data
+        // console.log("Categories fetched:", response.data); // Log the response from the API to check the data
         if (Array.isArray(response.data.results)) {
           const categoriesData = response.data.results.map((category) => ({
             id: category.id,
