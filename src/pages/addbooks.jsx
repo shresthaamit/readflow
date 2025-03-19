@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./profile.css"; // Use your existing profile.css
+import { use } from "react";
+import { useFetcher } from "react-router-dom";
 
-const AddBook = ({ onBack, onBookAdded }) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    subtitle: "",
-    author: "",
-    category: "", // Category id will be stored here
-    image: null,
-    pdf: null,
-    publisher: null, // Set to null initially
-    publication_date: "", // Set to empty initially
-    distribution_expenses: "", // Add field for distribution_expenses if needed
-  });
+const AddBook = ({ onBack, onBookAdded, bookToEdit }) => {
+  const [formData, setFormData] = useState(null);
+
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [categories, setCategories] = useState([]);
@@ -41,6 +34,20 @@ const AddBook = ({ onBack, onBookAdded }) => {
 
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    setFormData({
+      title: bookToEdit?.title || "",
+      subtitle: bookToEdit?.subtitle || "",
+      author: bookToEdit?.author || "",
+      category: bookToEdit?.category || "", // Category id will be stored here
+      image: "",
+      pdf: "",
+      publisher: bookToEdit?.publisher || "", // Set to null initially
+      publication_date: bookToEdit?.publication_date || "", // Set to empty initially
+      distribution_expenses: bookToEdit?.distribution_expenses || "", // Add field for distribution_expenses if needed
+    });
+  }, [bookToEdit]);
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
@@ -158,7 +165,7 @@ const AddBook = ({ onBack, onBookAdded }) => {
       <input
         type="text"
         name="title"
-        value={formData.title}
+        value={formData?.title}
         onChange={handleChange}
         required
       />
@@ -166,7 +173,7 @@ const AddBook = ({ onBack, onBookAdded }) => {
       <input
         type="text"
         name="subtitle"
-        value={formData.subtitle}
+        value={formData?.subtitle}
         onChange={handleChange}
         required
       />
@@ -174,7 +181,7 @@ const AddBook = ({ onBack, onBookAdded }) => {
       <input
         type="text"
         name="author"
-        value={formData.author}
+        value={formData?.author}
         onChange={handleChange}
         required
       />
@@ -214,7 +221,7 @@ const AddBook = ({ onBack, onBookAdded }) => {
       <input
         type="date"
         name="publication_date"
-        value={formData.publication_date}
+        value={formData?.publication_date}
         onChange={handleChange}
         required
       />
@@ -222,27 +229,27 @@ const AddBook = ({ onBack, onBookAdded }) => {
       <input
         type="text"
         name="distribution_expenses"
-        value={formData.distribution_expenses}
+        value={formData?.distribution_expenses}
         onChange={handleChange}
         placeholder="Enter distribution expenses (Optional)"
       />
 
-      {formData.image && (
+      {formData?.image && (
         <div className="preview">
           <p>Image Preview:</p>
           <img
-            src={URL.createObjectURL(formData.image)}
+            src={URL.createObjectURL(formData?.image)}
             alt="Book Preview"
             style={{ width: "100px", height: "100px", objectFit: "cover" }}
           />
         </div>
       )}
 
-      {formData.pdf && (
+      {formData?.pdf && (
         <div className="preview">
           <p>PDF Preview:</p>
           <a
-            href={URL.createObjectURL(formData.pdf)}
+            href={URL.createObjectURL(formData?.pdf)}
             target="_blank"
             rel="noopener noreferrer"
           >

@@ -21,7 +21,7 @@ export default function Profile() {
   const [loadingBookId, setLoadingBookId] = useState(null);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const editBookId = searchParams.get("edit"); // Get book ID for editing
+  const [editBookId, setEditBookId] = useState(null); // Get book ID for editing
   const [bookToEdit, setBookToEdit] = useState(null);
 
   // Fetch the book details for editing if editBookId is present
@@ -135,6 +135,7 @@ export default function Profile() {
 
   // Handle the click on "Add Books"
   const handleAddBook = () => {
+    setBookToEdit(null);
     setActiveSection("addbook"); // Switch to the "addbook" section
   };
 
@@ -261,6 +262,7 @@ export default function Profile() {
           <AddBook
             // Pass the book data if it's in edit mode
             onBack={() => setActiveSection("history")}
+            bookToEdit={bookToEdit ? bookToEdit : null}
           />
         )}
 
@@ -268,7 +270,12 @@ export default function Profile() {
           <EditProfile onBack={() => setActiveSection("history")} />
         )}
 
-        {activeSection === "viewbooks" && <StaffBooks />}
+        {activeSection === "viewbooks" && (
+          <StaffBooks
+            changeActive={setActiveSection}
+            setEditId={setEditBookId}
+          />
+        )}
       </div>
     </>
   );

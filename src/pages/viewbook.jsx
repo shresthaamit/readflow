@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "./staffbooks.css";
 
-function StaffBooks() {
+function StaffBooks({ changeActive, setEditId }) {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
@@ -47,6 +47,11 @@ function StaffBooks() {
     fetchBooks();
   }, []);
 
+  const handleStaffEdit = (bookId) => {
+    changeActive("addbook");
+    setEditId(bookId);
+  };
+
   return (
     <>
       {/* <h1 className="staff-books-title">Your Books</h1> */}
@@ -68,12 +73,12 @@ function StaffBooks() {
                   <p className="staff-rating">{book.rating} / 5</p>
                 </div>
                 <div className="staff-book-actions">
-                  <Link
-                    to={""} // Corrected to use book.id
+                  <button
                     className="staff-edit-btn"
+                    onClick={() => handleStaffEdit(book.id)}
                   >
-                    <FaEdit /> Edit
-                  </Link>
+                    Edit
+                  </button>
                   <button
                     className="staff-delete-btn"
                     onClick={() => handleDelete(book.id)}
