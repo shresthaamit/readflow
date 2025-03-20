@@ -69,8 +69,7 @@ function StaffBooks({ changeActive, setEditId }) {
                 <div className="staff-carddetails">
                   <h3>{book.title}</h3>
                   <p className="author">{book.author.split(" ")[0]}</p>
-                  <p className="staff-category">{book.category}</p>
-                  <p className="staff-rating">{book.rating} / 5</p>
+                  <p className="staff-category">{book.category.name}</p>
                 </div>
                 <div className="staff-book-actions">
                   <button
