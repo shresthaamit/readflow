@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "./staffbooks.css";
+import axios from "axios"; // Import axios to make the delete request
 
 function StaffBooks({ changeActive, setEditId }) {
   const [books, setBooks] = useState([]);
@@ -52,9 +52,32 @@ function StaffBooks({ changeActive, setEditId }) {
     setEditId(bookId);
   };
 
+  const handleDelete = async (bookId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this book? This action cannot be undone."
+    );
+
+    if (!confirmed) {
+      return; // If user cancels, do nothing
+    }
+
+    try {
+      await axios.delete(`http://127.0.0.1:8000/books/accounts/${bookId}/`, {
+        headers: {
+          Authorization: `Token ${localStorage.getItem("token")}`,
+        },
+      });
+
+      // Filter out the deleted book from the list
+      setBooks((prevBooks) => prevBooks.filter((book) => book.id !== bookId));
+      alert("Book deleted successfully!");
+    } catch (err) {
+      alert("Failed to delete book. Please try again later.");
+    }
+  };
+
   return (
     <>
-      {/* <h1 className="staff-books-title">Your Books</h1> */}
       <div className="staff-booksection">
         <div className="staff-books">
           {books?.length > 0 ? (
@@ -80,7 +103,7 @@ function StaffBooks({ changeActive, setEditId }) {
                   </button>
                   <button
                     className="staff-delete-btn"
-                    onClick={() => handleDelete(book.id)}
+                    onClick={() => handleDelete(book.id)} // Pass the bookId to handleDelete
                   >
                     <FaTrash /> Delete
                   </button>
@@ -94,11 +117,6 @@ function StaffBooks({ changeActive, setEditId }) {
       </div>
     </>
   );
-
-  function handleDelete(bookId) {
-    // Handle delete book action (you can make an API call here)
-    console.log(`Delete book with id: ${bookId}`);
-  }
 }
 
 export default StaffBooks;

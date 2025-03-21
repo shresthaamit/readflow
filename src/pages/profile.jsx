@@ -161,7 +161,7 @@ export default function Profile() {
             ) : userInfo ? (
               <>
                 <h2>{userInfo.username}</h2>
-                <p>User since: {userInfo.date_joined}</p>
+                <p>Since: {userInfo.date_joined}</p>
               </>
             ) : (
               <>

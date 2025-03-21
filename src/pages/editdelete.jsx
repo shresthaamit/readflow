@@ -158,21 +158,6 @@ const EditBook = ({ bookId, onBack, onBookUpdated, onBookDeleted }) => {
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`http://127.0.0.1:8000/books/accounts/${bookId}/`, {
-        headers: {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        },
-      });
-
-      setSuccessMessage("Book deleted successfully!");
-      if (onBookDeleted) onBookDeleted(bookId);
-    } catch (err) {
-      setError("Failed to delete book. Please try again later.");
-    }
-  };
-
   return (
     <form onSubmit={handleSubmit} className="edit-profile">
       <label>Title:</label>
