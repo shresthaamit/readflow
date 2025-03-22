@@ -9,6 +9,7 @@ import axios from "axios";
 import "./books.css";
 import EditDelete from "../components/editdelete";
 import AddToFavorites from "../components/AddToFavou";
+import handleDownloadBook from "../components/download";
 
 export default function BookDetails() {
   const { id } = useParams();
@@ -213,7 +214,10 @@ export default function BookDetails() {
         });
     }
   };
-
+  const handleButtonClick = (bookId) => {
+    console.log("Book ID received in handleButtonClick:", bookId); // Log to check the value of bookId
+    handleDownloadBook(bookId);
+  };
   const toggleReviews = () => {
     if (showMore) {
       setVisibleReviews(3); // Reset to 3 reviews when showing less
@@ -253,7 +257,10 @@ export default function BookDetails() {
           <h5>{book.rating}</h5>
           <p>{book.details}</p>
           <div className="bookbuttoons">
-            <button className="buttons ">
+            <button
+              className="buttons"
+              onClick={() => handleButtonClick(book.id)}
+            >
               Download
               <span>
                 <LuDownload />
