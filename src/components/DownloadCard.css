@@ -1,0 +1,113 @@
+/* Container for all cards */
+.cardsx {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+/* Individual card styling */
+.card {
+  width: 250px; /* Fixed width for all cards */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+
+  max-width: 250px;
+}
+
+/* Card image styling */
+.card img {
+  width: 100%;
+  height: 200px; /* Fixed height for image */
+  object-fit: cover; /* Ensures the image covers the space properly */
+  border-bottom: 2px solid #f0f0f0;
+}
+
+/* Card details section */
+.carddetail {
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+}
+
+/* Left section for rating and category */
+.left-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.left-section img {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.title-author-container {
+  padding: 12px;
+  text-align: left;
+  flex-grow: 1; /* Ensures the title and author take up remaining space */
+}
+
+/* Book title and author styling */
+.left-part {
+  font-weight: bold;
+  margin: 0;
+}
+
+.right-part {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* Button container styling */
+.bookbuttonss {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  align-items: center;
+}
+
+/* Button styling */
+.buttons {
+  display: inline-flex;
+  align-items: center;
+  background-color: #0066cc;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.buttons:hover {
+  background-color: #005bb5;
+}
+
+/* Remove button styling */
+.remove-download-btn {
+  background-color: #ff6347; /* Red color for remove button */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.remove-download-btn:hover {
+  background-color: #e53d3d;
+}
+
+/* Optional: Adding a hover effect for the cards */
+.card:hover {
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}

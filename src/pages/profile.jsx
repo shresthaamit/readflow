@@ -8,7 +8,7 @@ import defaults from "../images/default.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import AddBook from "./addbooks"; // Import AddBook component
 import StaffBooks from "./viewbook"; // Import StaffBooks component
-
+import DownloadCard from "../components/DownloadCard";
 export default function Profile() {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("history"); // Initially shows history
@@ -88,21 +88,45 @@ export default function Profile() {
     const token = localStorage.getItem("token");
     if (token) {
       axios
-        .get("http://127.0.0.1:8000/books/downloads/", {
+        .get("http://127.0.0.1:8000/books/user/downloaded-books/", {
           headers: {
             Authorization: `Token ${token}`,
           },
         })
         .then((response) => {
-          const downloadedBooksList = response.data.results;
-          setDownloadedBooks(downloadedBooksList); // Set downloaded books in the state
+          console.log("Downloaded Books Response:", response.data);
+          setDownloadedBooks(response.data || []); // Ensure it's always an array
         })
         .catch(() => {
           setError("Failed to fetch downloaded books.");
+          setDownloadedBooks([]); // Set as empty array on error
         });
     }
   };
+  const removeFromDownloads = async (book_id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/books/user/downloads/delete/${book_id}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
 
+      if (response.ok) {
+        // Filter out the book from the state after successful deletion
+        setDownloadedBooks((prevBooks) =>
+          prevBooks.filter((book) => book.book_id !== book_id)
+        );
+      } else {
+        setError("Failed to remove the book from downloads.");
+      }
+    } catch (err) {
+      setError("Error occurred while removing the book.");
+    }
+  };
   const removeFromFavorites = (bookId) => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -248,7 +272,13 @@ export default function Profile() {
               {activeTab === "downloads" ? (
                 downloadedBooks.length > 0 ? (
                   downloadedBooks.map((book) => (
-                    <Card key={book.id} book={book} />
+                    <DownloadCard
+                      key={book.book_id}
+                      book={book}
+                      isProfilePage={true}
+                      removeFromDownloads={removeFromDownloads}
+                      className="downloaded" // Add this class to style as a downloaded card
+                    />
                   ))
                 ) : (
                   <p>No downloaded books yet!</p>
