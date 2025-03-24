@@ -1,61 +1,70 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 import "./books.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import books from "./books.json";
-import { useState } from "react";
+import Pagination from "../components/pagination";
 import { LuDownload } from "react-icons/lu";
 import { SlArrowRight } from "react-icons/sl";
-import { BsFillBookmarkHeartFill } from "react-icons/bs";
 
 function Books() {
-  // console.log(categories);
-  const [selectcategory, setSelectedCategory] = useState(null);
-  const [selectauthor, setSelectedAuthor] = useState(null);
-  const [books, setBooks] = useState(null);
+  const [selectCategory, setSelectedCategory] = useState(null);
+  const [selectAuthor, setSelectedAuthor] = useState(null);
+  const [books, setBooks] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMoreBooks, setHasMoreBooks] = useState(true); // To track if there are more books available
+
   const location = useLocation();
-  const navigate = useNavigate(); // For updating URL without reloading the page
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const searchQuery = searchParams.get("search");
+  const page = parseInt(searchParams.get("page") || "1");
+
+  // Fetch books based on current page
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const response = await fetch(`http://localhost:8000/books/?page=${page}`);
+      const data = await response.json();
+
+      if (data.results.length === 0) {
+        setHasMoreBooks(false); // If no books are returned, set hasMoreBooks to false
+      } else {
+        setHasMoreBooks(true); // Otherwise, there are more books
+      }
+
+      setBooks(data.results);
+      setTotalPages(data.total_pages);
+      setCurrentPage(page);
+    };
+    fetchBooks();
+  }, [page]);
+
+  // Handle category change
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category === selectCategory ? null : category);
+    navigate(`/books?page=1${category ? `&category=${category}` : ""}`);
+  };
+
+  // Handle author change
+  const handleAuthorChange = (author) => {
+    setSelectedAuthor(author === selectAuthor ? null : author);
+    navigate(`/books?page=1${author ? `&author=${author}` : ""}`);
+  };
+
   const categories = [...new Set(books?.map((book) => book.category))];
   const authors = [...new Set(books?.map((book) => book.author))];
 
-  const filteredbooks = books?.filter((book) => {
+  const filteredBooks = books?.filter((book) => {
     if (searchQuery) {
-      return book.title.toLowerCase().includes(searchQuery.toLowerCase()); // Filter by title
+      return book.title.toLowerCase().includes(searchQuery.toLowerCase());
     }
-    if (selectcategory || selectauthor) {
-      return book.category === selectcategory || book.author === selectauthor;
+    if (selectCategory || selectAuthor) {
+      return book.category === selectCategory || book.author === selectAuthor;
     }
     return true;
   });
 
-  useEffect(() => {
-    const fetchBooks = async () => {
-      const response = await fetch("http://localhost:8000/books/");
-      const data = await response.json();
-      // console.log(data);
-      setBooks(data.results);
-    };
-    fetchBooks();
-  }, []);
-
-  const handleclick = (category) => {
-    setSelectedCategory(category === selectcategory ? null : category);
-    if (category === null && selectauthor === null) {
-      // Reset the search query when "All" is clicked
-      navigate("/books"); // This will remove the search query from the URL
-    }
-  };
-
-  const handleAuthorbuttons = (author) => {
-    setSelectedAuthor(author === selectauthor ? null : author);
-    if (author === null && selectcategory === null) {
-      // Reset the search query when "All" is clicked
-      navigate("/books"); // This will remove the search query from the URL
-    }
-  };
   return (
     <>
       <h1 className="title">Find The Perfect Book</h1>
@@ -65,11 +74,7 @@ function Books() {
             <h1>Book Categories</h1>
             <div className="category-buttons">
               <button
-                onClick={() => {
-                  setSelectedCategory(null);
-                  setSelectedAuthor(null);
-                  navigate("/books");
-                }}
+                onClick={() => handleCategoryChange(null)}
                 className="category-button"
               >
                 All
@@ -77,7 +82,7 @@ function Books() {
               {categories.map((category, index) => (
                 <button
                   key={index}
-                  onClick={() => handleclick(category)}
+                  onClick={() => handleCategoryChange(category)}
                   className="category-button"
                 >
                   {category}
@@ -89,11 +94,7 @@ function Books() {
             <h1>Popular Authors</h1>
             <div className="author-buttons">
               <button
-                onClick={() => {
-                  setSelectedCategory(null);
-                  setSelectedAuthor(null);
-                  navigate("/books");
-                }}
+                onClick={() => handleAuthorChange(null)}
                 className="author-button"
               >
                 All
@@ -101,7 +102,7 @@ function Books() {
               {authors.map((author, index) => (
                 <button
                   key={index}
-                  onClick={() => handleAuthorbuttons(author)}
+                  onClick={() => handleAuthorChange(author)}
                   className="author-button"
                 >
                   {author}
@@ -111,15 +112,13 @@ function Books() {
           </div>
         </div>
         <div className="books">
-          {filteredbooks?.map((book) => (
-            <book>
+          {filteredBooks?.map((book) => (
+            <div key={book.id}>
               <div className="bookimg">
                 <img
                   src={`http://localhost:8000${book.image}`}
                   alt={book.title}
                 />
-
-                {/* <img src={book.image} alt={book.bookTitle} /> */}
               </div>
               <div className="carddetail">
                 <div className="detail1">
@@ -148,10 +147,15 @@ function Books() {
                   </span>
                 </Link>
               </div>
-            </book>
+            </div>
           ))}
         </div>
       </div>
+      {/* Only show Pagination if there are more books */}
+      {hasMoreBooks && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} />
+      )}
+      {!hasMoreBooks && <p>No more books available</p>}
     </>
   );
 }

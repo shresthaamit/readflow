@@ -104,6 +104,13 @@ export default function Profile() {
     }
   };
   const removeFromDownloads = async (book_id) => {
+    const token = localStorage.getItem("token"); // Get the token
+
+    if (!token) {
+      console.error("User is not authenticated.");
+      return;
+    }
+
     try {
       const response = await fetch(
         `http://localhost:8000/books/user/downloads/delete/${book_id}/`,
@@ -116,15 +123,15 @@ export default function Profile() {
       );
 
       if (response.ok) {
-        // Filter out the book from the state after successful deletion
+        // Successfully removed the book from downloads, update the state
         setDownloadedBooks((prevBooks) =>
           prevBooks.filter((book) => book.book_id !== book_id)
         );
       } else {
-        setError("Failed to remove the book from downloads.");
+        console.error("Failed to remove the book from downloads.");
       }
     } catch (err) {
-      setError("Error occurred while removing the book.");
+      console.error("Error occurred while removing the book:", err);
     }
   };
   const removeFromFavorites = (bookId) => {
@@ -277,7 +284,6 @@ export default function Profile() {
                       book={book}
                       isProfilePage={true}
                       removeFromDownloads={removeFromDownloads}
-                      className="downloaded" // Add this class to style as a downloaded card
                     />
                   ))
                 ) : (

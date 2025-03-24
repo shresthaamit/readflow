@@ -1,0 +1,39 @@
+/* Pagination Container */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 14px;
+  align-items: center;
+  margin-top: 40px;
+  gap: 10px; /* Space between buttons */
+}
+
+/* Pagination Button */
+.pagination-container button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Pagination Button on Hover */
+.pagination-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Disabled Pagination Button */
+.pagination-container button:disabled {
+  background-color: #121010;
+  cursor: not-allowed;
+}
+
+/* Pagination Ellipsis (if applicable) */
+.pagination-container span {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1e1b1b; /* Gray color for ellipsis */
+}
