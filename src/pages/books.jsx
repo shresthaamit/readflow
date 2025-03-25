@@ -7,6 +7,7 @@ import Pagination from "../components/pagination";
 import { LuDownload } from "react-icons/lu";
 import { SlArrowRight } from "react-icons/sl";
 
+import handleDownloadBook from "../components/download";
 function Books() {
   const [selectCategory, setSelectedCategory] = useState(null);
   const [selectAuthor, setSelectedAuthor] = useState(null);
@@ -50,6 +51,10 @@ function Books() {
   const handleAuthorChange = (author) => {
     setSelectedAuthor(author === selectAuthor ? null : author);
     navigate(`/books?page=1${author ? `&author=${author}` : ""}`);
+  };
+  const handleButtonClick = (bookId) => {
+    console.log("Book ID received in handleButtonClick:", bookId); // Log to check the value of bookId
+    handleDownloadBook(bookId);
   };
 
   const categories = [...new Set(books?.map((book) => book.category))];
@@ -140,12 +145,15 @@ function Books() {
                     <SlArrowRight />
                   </span>
                 </Link>
-                <Link to="button" className="buttons">
+                <button
+                  className="buttons"
+                  onClick={() => handleButtonClick(book.id)}
+                >
                   Download
                   <span>
                     <LuDownload />
                   </span>
-                </Link>
+                </button>
               </div>
             </div>
           ))}

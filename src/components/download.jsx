@@ -40,7 +40,7 @@ const handleDownloadBook = async (bookId) => {
     alert("Download started!");
   } catch (error) {
     console.error("Download error:", error);
-    alert("Failed to download the book. Please try again.");
+    alert("No PDF found for this book");
   }
 };
 

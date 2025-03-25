@@ -57,6 +57,7 @@ const recommendedBooks = [
 ];
 
 export default function RecommendBooks() {
+  const [cardsData, setCardsData] = useState([]);
   const [recommendedBooks, setRecommendedBooks] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
@@ -66,8 +67,7 @@ export default function RecommendBooks() {
           "http://localhost:8000/books/recommend/",
           {
             headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Add token for authentication
+              Authorization: `Token ${localStorage.getItem("token")}`,
             },
           }
         );
@@ -78,6 +78,7 @@ export default function RecommendBooks() {
     };
     fetchRecommendBooks();
   }, []);
+  const baseUrl = "http://127.0.0.1:8000";
   return (
     <div className="head-container">
       <h1 className="head"> Top Recommendations for You</h1>
@@ -89,7 +90,11 @@ export default function RecommendBooks() {
         {recommendedBooks.map((book) => (
           <Card
             key={book.id}
-            book={book}
+            book={{
+              ...book,
+              image: `${baseUrl}${book.image}`, // Prepend the base URL to the image path
+              qr_code_url: `${baseUrl}${book.qr_code_url}`, // Similarly for the QR code URL
+            }}
             onClick={() => navigate(`/books/${book.id}`)}
           >
             Go to {book.bookTitle}
