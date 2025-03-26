@@ -6,11 +6,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Pagination from "../components/pagination";
 import { LuDownload } from "react-icons/lu";
 import { SlArrowRight } from "react-icons/sl";
-
+import starImage from "../images/star.jpg";
 import handleDownloadBook from "../components/download";
 function Books() {
   const [selectCategory, setSelectedCategory] = useState(null);
   const [selectAuthor, setSelectedAuthor] = useState(null);
+
   const [books, setBooks] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -127,10 +128,10 @@ function Books() {
               </div>
               <div className="carddetail">
                 <div className="detail1">
-                  <img src={book.star} alt="rating star" />
-                  <span>{book.rating}</span>
-                  <span className="span">(6) • </span>
-                  <span className="span">{book.category}</span>
+                  <img src={starImage} alt="rating star" />
+                  <span>{book.average_rate.toFixed(1)}</span>
+                  {/* <span className="span">{book.total_ratings}</span> */}
+                  {/* <span className="span">{book.category}</span> */}
                 </div>
 
                 <p className="author"> {book.author.split(" ")[0]}</p>

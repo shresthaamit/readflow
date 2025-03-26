@@ -48,6 +48,11 @@ function Searchbar() {
     </div>
   );
 }
+// useEffect(() => {
+//   if (isLoggedIn) {
+//     setLoggedIn(true);
+//   }
+// }, [isLoggedIn]);
 
 function Navbar() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -81,14 +86,17 @@ function Navbar() {
   // This function checks login status directly from localStorage
   const checkLoginStatus = () => {
     const token = localStorage.getItem("token");
+    console.log("Token in localStorage:", token);
     setLoggedIn(!!token); // If token exists, user is logged in
   };
 
   useEffect(() => {
+    console.log("useEffect - Checking login status");
     checkLoginStatus(); // Check on mount
 
     // Listen to changes in localStorage (for login/logout from other tabs)
     const handleStorageChange = () => {
+      console.log("Storage event detected");
       checkLoginStatus();
     };
 
@@ -99,7 +107,9 @@ function Navbar() {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []); // Runs only once on mount
-
+  useEffect(() => {
+    checkLoginStatus(); // Recheck status whenever the component is re-rendered
+  }, [isLoggedIn]);
   return (
     <div className="navbar">
       <div className="navhead">
