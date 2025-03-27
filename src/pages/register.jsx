@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ButtonGroup from "../components/ButtonGroup";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Registerpic from "../images/register.jpg";
 import "./loginregister.css";
 import axios from "axios";
@@ -155,6 +155,12 @@ export default function Register() {
             <p className="success-message">Registration successful!</p>
           )}
         </form>
+        <p>
+          Registered??{" "}
+          <Link to="/login" className="register-link">
+            Login
+          </Link>
+        </p>
       </div>
       <div className="registerimg">
         <img src={Registerpic} alt="" />

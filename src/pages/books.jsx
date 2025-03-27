@@ -26,7 +26,18 @@ function Books() {
   // Fetch books based on current page
   useEffect(() => {
     const fetchBooks = async () => {
-      const response = await fetch(`http://localhost:8000/books/?page=${page}`);
+      const url = new URL("http://localhost:8000/books/");
+      const params = {
+        page: page,
+        search: searchQuery, // Include the search query here
+        category: selectCategory,
+        author: selectAuthor,
+      };
+      Object.keys(params).forEach((key) => {
+        if (params[key]) url.searchParams.append(key, params[key]);
+      });
+
+      const response = await fetch(url);
       const data = await response.json();
 
       if (data.results.length === 0) {
@@ -39,8 +50,9 @@ function Books() {
       setTotalPages(data.total_pages);
       setCurrentPage(page);
     };
+
     fetchBooks();
-  }, [page]);
+  }, [page, searchQuery, selectCategory, selectAuthor]);
 
   // Handle category change
   const handleCategoryChange = (category) => {
@@ -57,8 +69,7 @@ function Books() {
     console.log("Book ID received in handleButtonClick:", bookId); // Log to check the value of bookId
     handleDownloadBook(bookId);
   };
-
-  const categories = [...new Set(books?.map((book) => book.category))];
+  const categories = [...new Set(books?.map((book) => book.category_name))];
   const authors = [...new Set(books?.map((book) => book.author))];
 
   const filteredBooks = books?.filter((book) => {
@@ -66,11 +77,12 @@ function Books() {
       return book.title.toLowerCase().includes(searchQuery.toLowerCase());
     }
     if (selectCategory || selectAuthor) {
-      return book.category === selectCategory || book.author === selectAuthor;
+      return (
+        book.category_name === selectCategory || book.author === selectAuthor
+      );
     }
     return true;
   });
-
   return (
     <>
       <h1 className="title">Find The Perfect Book</h1>
