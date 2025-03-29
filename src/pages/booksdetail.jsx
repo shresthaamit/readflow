@@ -113,7 +113,7 @@ export default function BookDetails() {
           }
         )
         .then((response) => {
-          // console.log(response);
+          console.log(response);
           const updatedReviews = reviews.results.map((review) =>
             review.id === editingReview ? response.data : review
           );
